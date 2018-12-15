@@ -1770,7 +1770,16 @@ sub feedbackMacro_form {
 	$result .= CGI::hidden("returnURL", $returnURL) . "\n";
 	my $counter = 1;
 	foreach my $emailAddress (@recipients) {
+<<<<<<< Updated upstream
 		$result .= CGI::hidden("email$counter",$emailAddress) . "\n";
+=======
+		my ($emailName,$emailAdd) = split($emailAddress,"\<",2);
+		$emailAdd =~ s/\>//;
+		$emailName =~ s/"//;
+		$result .= CGI::hidden("emailName$counter",$emailName) . "\n";
+		$result .= CGI::hidden("emailAddress$counter",$emailAdd) . "\n";
+#		$result .= CGI::hidden("email$counter",$emailAddress) . "\n";
+>>>>>>> Stashed changes
 		$counter++;
 	}
 	$result .= CGI::p({-align=>"left"}, CGI::submit(-name=>"feedbackForm", -value=>$feedbackName));
