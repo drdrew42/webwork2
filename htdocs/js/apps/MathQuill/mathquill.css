@@ -331,6 +331,9 @@
 .mq-math-mode .mq-editable-field {
   cursor: text;
   font-family: Symbola, "Times New Roman", serif;
+  color: black;
+  border-color: black;
+  background: white;
 }
 .mq-math-mode .mq-overarrow {
   border-top: 1px solid black;
