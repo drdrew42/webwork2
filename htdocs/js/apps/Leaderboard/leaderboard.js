@@ -193,7 +193,7 @@ var LeaderTable = function (_React$Component) {
 
       var tableInfo = [];
       if (this.state.data.length > 0) {
-        for (var i = 0; i < 21; i++) {
+        for (var i = 0; i < this.state.data.length; i++) {
           var current = this.state.data[i];
           tableInfo.push(React.createElement(
             LeaderTableItem,
