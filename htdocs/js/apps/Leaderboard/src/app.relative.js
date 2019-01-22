@@ -142,7 +142,6 @@ class LeaderTable extends React.Component {
           if (parseInt(item.achievementPoints) > maxScore)
             maxScore = item.achievementPoints;
         });
-        console.log(data);
         this.setState({ data: data });
       },
       "json"
