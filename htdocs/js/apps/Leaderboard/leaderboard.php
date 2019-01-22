@@ -1,8 +1,8 @@
 <?php
   define('DB_HOST', 'localhost');
   define('DB_NAME', 'webwork');
-  define('DB_USER', 'webworkWrite');
-  define('DB_PASS', 'passwordRW');
+  define('DB_USER', 'root');
+  define('DB_PASS', 'root');
 
   global $conn;
 
@@ -58,7 +58,8 @@
       array_push($achievementPoints, extractRows($conn->query($getPoints), 0)[0][0]);
   
     }
-  
+    
+    
 
   
     for($i=0; $i < sizeof($achievementPoints); $i++){
