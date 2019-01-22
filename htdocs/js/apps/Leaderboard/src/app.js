@@ -8,14 +8,14 @@ let key = null;
 // and place leaderboard.php in /opt/webwork/webwork2/htdocs/js/apps/Leaderboard/
 // along with "compiled" version of this app.js
 
-const courseName = document.getElementByID("courseName").value;
+const courseName = document.getElementById("courseName").value;
 const leaderboardURL =
-  document.getElementByID("site_url").value +
+  document.getElementById("site_url").value +
   "js/apps/Leaderboard/leaderboard.php";
 
 // to do: construct maxExperience in Leaderboards.pm and stash it in id='maxExperience'
 // then uncomment this bad boy
-const pointsPerProblem = 5;
+const pointsPerProblem = document.getElementById('achievementPPP');
 let maxScore = 0;
 
 function checkCookies() {

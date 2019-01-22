@@ -14,19 +14,20 @@ var key = null;
 
 // uncomment the following two lines,
 // replace courseinfo.name with courseName
-// replace hard-coded leaderboard URL, 
+// replace hard-coded leaderboard URL,
 // and place leaderboard.php in /opt/webwork/webwork2/htdocs/js/apps/Leaderboard/
 // along with "compiled" version of this app.js
 
-// const courseName = document.getElementByID('courseName').value;
-// const leaderboardURL = document.getElementByID('site_url').value + 'js/apps/Leaderboard/leaderboard.php'/;
+var courseName = document.getElementById("courseName").value;
+var leaderboardURL = document.getElementById("site_url").value + "js/apps/Leaderboard/leaderboard.php";
 
 // to do: construct maxExperience in Leaderboards.pm and stash it in id='maxExperience'
 // then uncomment this bad boy
-// const maxExperience = document.getElementByID('maxExperience').value;
+var pointsPerProblem = document.getElementById('achievementPPP');
+var maxScore = 0;
 
 function checkCookies() {
-  var value = getCookie("WeBWorKCourseAuthen." + courseinfo.name); // getCookie defined at the bottom
+  var value = getCookie("WeBWorKCourseAuthen." + courseName); // getCookie defined at the bottom
   user = value.split("\t")[0];
   key = value.split("\t")[1];
 }
@@ -119,7 +120,7 @@ var LeaderTable = function (_React$Component) {
       var requestObject = {
         user: user,
         key: key,
-        courseName: courseinfo.name // replace this with courseName
+        courseName: courseName
       };
       // The url  needs to be taken from a global environment variable
       // This would idealy be a variable in the leaderboards.tmpl file
@@ -145,11 +146,11 @@ var LeaderTable = function (_React$Component) {
       //     console.log("An error has occurred: " + err);
       //   });
 
-      $.post("http://mathww.citytech.cuny.edu/leaderboard.php", // replace this with leaderboardURL
-      requestObject, function (data) {
+      $.post(leaderboardURL, requestObject, function (data) {
         data.forEach(function (item) {
           if (item.achievementPoints == null) item.achievementPoints = 0;
         });
+        maxScore = data[0].numOfProblems * pointsPerProblem + data[0].achievementPtsSum;
         _this2.setState({ data: data });
       }, "json");
     }
@@ -213,7 +214,10 @@ var LeaderTable = function (_React$Component) {
             React.createElement(
               "td",
               { style: tdStyle },
-              React.createElement(Filler, { percentage: current.achievementPoints / 2000 * 100 })
+              React.createElement(Filler, {
+                percentage: Math.floor(current.achievementPoints / maxScore * 1000) / 10,
+                score: current.achievementPoints
+              })
             )
           ));
         }
@@ -400,7 +404,7 @@ var Filler = function (_React$Component4) {
         React.createElement(
           "p",
           { style: { fontWeight: "100" } },
-          this.props.percentage
+          this.props.score
         )
       );
     }
