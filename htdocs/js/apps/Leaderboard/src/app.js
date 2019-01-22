@@ -132,14 +132,12 @@ class LeaderTable extends React.Component {
       leaderboardURL,
       requestObject,
       data => {
-	console.log(data)
         data.forEach(item => {
           if (item.achievementPoints == null) item.achievementPoints = 0;
         });
         maxScore =
           parseInt(data[0].numOfProblems)*parseInt(pointsPerProblem)+parseInt(data[0].achievementPtsSum);
         this.setState({ data: data });
-	console.log(item);
       },
       "json"
     );
@@ -317,7 +315,7 @@ class Filler extends React.Component {
           background: this.changeColor()
         }}
       >
-        <p style={{ fontWeight: "100" }}>{this.props.score}</p>
+        <p style={{ fontWeight: "100" }}>{this.props.percentage}%</p>
       </div>
     );
   }

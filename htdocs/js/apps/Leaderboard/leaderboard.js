@@ -147,13 +147,11 @@ var LeaderTable = function (_React$Component) {
       //   });
 
       $.post(leaderboardURL, requestObject, function (data) {
-        console.log(data);
         data.forEach(function (item) {
           if (item.achievementPoints == null) item.achievementPoints = 0;
         });
         maxScore = parseInt(data[0].numOfProblems) * parseInt(pointsPerProblem) + parseInt(data[0].achievementPtsSum);
         _this2.setState({ data: data });
-        console.log(item);
       }, "json");
     }
   }, {
@@ -406,7 +404,8 @@ var Filler = function (_React$Component4) {
         React.createElement(
           "p",
           { style: { fontWeight: "100" } },
-          this.props.score
+          this.props.percentage,
+          "%"
         )
       );
     }
