@@ -15,7 +15,7 @@ const leaderboardURL =
 
 // to do: construct maxExperience in Leaderboards.pm and stash it in id='maxExperience'
 // then uncomment this bad boy
-const pointsPerProblem = document.getElementById('achievementPPP');
+const pointsPerProblem = document.getElementById('achievementPPP').value;
 let maxScore = 0;
 
 function checkCookies() {

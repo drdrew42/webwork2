@@ -23,7 +23,7 @@ var leaderboardURL = document.getElementById("site_url").value + "js/apps/Leader
 
 // to do: construct maxExperience in Leaderboards.pm and stash it in id='maxExperience'
 // then uncomment this bad boy
-var pointsPerProblem = document.getElementById('achievementPPP');
+var pointsPerProblem = document.getElementById('achievementPPP').value;
 var maxScore = 0;
 
 function checkCookies() {
