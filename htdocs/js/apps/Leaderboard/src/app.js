@@ -11,7 +11,7 @@ let key = null;
 const courseName = document.getElementById("courseName").value;
 const leaderboardURL =
   document.getElementById("site_url").value +
-  "js/apps/Leaderboard/leaderboard.php";
+  "/js/apps/Leaderboard/leaderboard.php";
 
 // to do: construct maxExperience in Leaderboards.pm and stash it in id='maxExperience'
 // then uncomment this bad boy
@@ -132,12 +132,14 @@ class LeaderTable extends React.Component {
       leaderboardURL,
       requestObject,
       data => {
+	console.log(data)
         data.forEach(item => {
           if (item.achievementPoints == null) item.achievementPoints = 0;
         });
         maxScore =
-          data[0].numOfProblems * pointsPerProblem + data[0].achievementPtsSum;
+          parseInt(data[0].numOfProblems)*parseInt(pointsPerProblem)+parseInt(data[0].achievementPtsSum);
         this.setState({ data: data });
+	console.log(item);
       },
       "json"
     );
@@ -178,7 +180,7 @@ class LeaderTable extends React.Component {
     let { tdStyle } = styles;
     let tableInfo = [];
     if (this.state.data.length > 0) {
-      for (var i = 0; i < 21; i++) {
+      for (var i = 0; i < this.state.data.length; i++) {
         var current = this.state.data[i];
         tableInfo.push(
           <LeaderTableItem>

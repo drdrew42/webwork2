@@ -19,7 +19,7 @@ var key = null;
 // along with "compiled" version of this app.js
 
 var courseName = document.getElementById("courseName").value;
-var leaderboardURL = document.getElementById("site_url").value + "js/apps/Leaderboard/leaderboard.php";
+var leaderboardURL = document.getElementById("site_url").value + "/js/apps/Leaderboard/leaderboard.php";
 
 // to do: construct maxExperience in Leaderboards.pm and stash it in id='maxExperience'
 // then uncomment this bad boy
@@ -147,11 +147,13 @@ var LeaderTable = function (_React$Component) {
       //   });
 
       $.post(leaderboardURL, requestObject, function (data) {
+        console.log(data);
         data.forEach(function (item) {
           if (item.achievementPoints == null) item.achievementPoints = 0;
         });
-        maxScore = data[0].numOfProblems * pointsPerProblem + data[0].achievementPtsSum;
+        maxScore = parseInt(data[0].numOfProblems) * parseInt(pointsPerProblem) + parseInt(data[0].achievementPtsSum);
         _this2.setState({ data: data });
+        console.log(item);
       }, "json");
     }
   }, {
