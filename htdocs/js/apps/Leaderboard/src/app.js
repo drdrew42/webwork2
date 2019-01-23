@@ -174,6 +174,7 @@ class LeaderTable extends React.Component {
       });
     }
   }
+
   renderTable() {
     let { tdStyle } = styles;
     let tableInfo = [];
@@ -182,19 +183,18 @@ class LeaderTable extends React.Component {
         var current = this.state.data[i];
         tableInfo.push(
           <LeaderTableItem>
-            <td style={tdStyle}>
+            <td className="tdStyleLB">
               {current.username ? current.username : current.id}
             </td>
-            <td style={tdStyle}>{current.achievementsEarned}</td>
-            <td style={tdStyle}>
+            <td className="tdStyleLB">{current.achievementsEarned}</td>
+            <td className="tdStyleLB">
               {current.achievementPoints ? current.achievementPoints : 0}
             </td>
-            <td style={tdStyle}>
+            <td className="tdStyleLB">
               <Filler
                 percentage={
                   Math.floor((current.achievementPoints / maxScore) * 1000) / 10
                 }
-                score={current.achievementPoints}
               />
             </td>
           </LeaderTableItem>
@@ -209,44 +209,46 @@ class LeaderTable extends React.Component {
     let tableInfo = this.renderTable();
 
     return (
-      <div style={divStyle}>
-        <table style={tableStyle}>
-          <tr style={trStyle}>
-            <th id="username" style={thStyle}>
-              Username
-            </th>
-            <th
-              className="sortButtons"
-              style={thStyle}
-              id="Earned"
-              onClick={this.checkOption}
-            >
-              Achievements Earned
-              {this.state.current == "Earned" ? (
-                this.state.currentSort == "Asc" ? (
-                  <i className="ion-android-arrow-dropup" />
-                ) : (
-                  <i className="ion-android-arrow-dropdown" />
-                )
-              ) : null}
-            </th>
-            <th
-              className="sortButtons"
-              style={thStyle}
-              id="Point"
-              onClick={this.checkOption}
-            >
-              Achievement Points
-              {this.state.current == "Point" ? (
-                this.state.currentSort == "Asc" ? (
-                  <i className="ion-android-arrow-dropup" />
-                ) : (
-                  <i className="ion-android-arrow-dropdown" />
-                )
-              ) : null}
-            </th>
-            <th style={thStyle}>Progress</th>
-          </tr>
+      <div className="divStyleLB">
+        <table className="tableStyleLB">
+          <tbody>
+            <tr className="trStyleLB">
+              <th id="username" className="thStyleLB">
+                Username
+              </th>
+              <th
+                className="sortButtons thStyleLB"
+                style={thStyle}
+                id="Earned"
+                onClick={this.checkOption}
+              >
+                Achievements Earned
+                {this.state.current == "Earned" ? (
+                  this.state.currentSort == "Asc" ? (
+                    <i className="ion-android-arrow-dropup" />
+                  ) : (
+                    <i className="ion-android-arrow-dropdown" />
+                  )
+                ) : null}
+              </th>
+              <th
+                className="sortButtons thStyleLB"
+                style={thStyle}
+                id="Point"
+                onClick={this.checkOption}
+              >
+                Achievement Points
+                {this.state.current == "Point" ? (
+                  this.state.currentSort == "Asc" ? (
+                    <i className="ion-android-arrow-dropup" />
+                  ) : (
+                    <i className="ion-android-arrow-dropdown" />
+                  )
+                ) : null}
+              </th>
+              <th className="thStyleLB">Progress</th>
+            </tr>
+          </tbody>
           <tbody>{tableInfo}</tbody>
         </table>
       </div>
@@ -257,7 +259,7 @@ class LeaderTable extends React.Component {
 class LeaderTableItem extends React.Component {
   render() {
     let { LeaderItemTrStyle } = styles;
-    return <tr style={LeaderItemTrStyle}>{this.props.children}</tr>;
+    return <tr className="LeaderItemTr">{this.props.children}</tr>;
   }
 }
 class Leaderboard extends React.Component {
@@ -274,7 +276,7 @@ class Leaderboard extends React.Component {
     return (
       <div>
         <LeaderTable />
-        <p style={pStyle}>
+        <p className="pStyleLB">
           <i>Sponsored by Santander Bank</i>
         </p>
       </div>
@@ -289,23 +291,19 @@ class Filler extends React.Component {
     this.changeColor = this.changeColor.bind(this);
   }
   changeColor() {
-    const percentage = parseInt(this.props.percentage);
-    let colorValue = "";
-
-    switch (true) {
-      case percentage <= 20:
-        colorValue = "#ff6961";
-        break;
-      case percentage >= 60 && percentage <= 80:
-        colorValue = "#4dff88";
-        break;
-      case percentage >= 20 && percentage < 60:
-        colorValue = "#FF7F50";
-        break;
-    }
-    return colorValue;
+    const perc = parseInt(this.props.percentage);
+	var r, g, b = 0;
+	if(perc < 50) {
+		r = 255;
+		g = Math.round(5.1 * perc);
+	}
+	else {
+		g = 255;
+		r = Math.round(510 - 5.10 * perc);
+	}
+	var h = r * 0x10000 + g * 0x100 + b * 0x1;
+	return '#' + ('000000' + h.toString(16)).slice(-6);
   }
-
   render() {
     return (
       <div
