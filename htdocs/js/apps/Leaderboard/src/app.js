@@ -4,19 +4,22 @@ let key = null;
 
 // uncomment the following two lines,
 // replace courseinfo.name with courseName
-// replace hard-coded leaderboard URL, 
+// replace hard-coded leaderboard URL,
 // and place leaderboard.php in /opt/webwork/webwork2/htdocs/js/apps/Leaderboard/
 // along with "compiled" version of this app.js
 
-// const courseName = document.getElementByID('courseName').value;
-// const leaderboardURL = document.getElementByID('site_url').value + 'js/apps/Leaderboard/leaderboard.php'/;
+const courseName = document.getElementById("courseName").value;
+const leaderboardURL =
+  document.getElementById("site_url").value +
+  "/js/apps/Leaderboard/leaderboard.php";
 
 // to do: construct maxExperience in Leaderboards.pm and stash it in id='maxExperience'
 // then uncomment this bad boy
-// const maxExperience = document.getElementByID('maxExperience').value;
+const pointsPerProblem = document.getElementById('achievementPPP').value;
+let maxScore = 0;
 
 function checkCookies() {
-  const value = getCookie(`WeBWorKCourseAuthen.${courseinfo.name}`); // getCookie defined at the bottom
+  const value = getCookie(`WeBWorKCourseAuthen.${courseName}`); // getCookie defined at the bottom
   user = value.split("\t")[0];
   key = value.split("\t")[1];
 }
@@ -99,7 +102,7 @@ class LeaderTable extends React.Component {
     const requestObject = {
       user,
       key,
-      courseName: courseinfo.name // replace this with courseName
+      courseName: courseName
     };
     // The url  needs to be taken from a global environment variable
     // This would idealy be a variable in the leaderboards.tmpl file
@@ -126,12 +129,14 @@ class LeaderTable extends React.Component {
     //   });
 
     $.post(
-      "http://mathww.citytech.cuny.edu/leaderboard.php", // replace this with leaderboardURL
+      leaderboardURL,
       requestObject,
       data => {
         data.forEach(item => {
           if (item.achievementPoints == null) item.achievementPoints = 0;
         });
+        maxScore =
+          parseInt(data[0].numOfProblems)*parseInt(pointsPerProblem)+parseInt(data[0].achievementPtsSum);
         this.setState({ data: data });
       },
       "json"
@@ -173,7 +178,7 @@ class LeaderTable extends React.Component {
     let { tdStyle } = styles;
     let tableInfo = [];
     if (this.state.data.length > 0) {
-      for (var i = 0; i < 21; i++) {
+      for (var i = 0; i < this.state.data.length; i++) {
         var current = this.state.data[i];
         tableInfo.push(
           <LeaderTableItem>
@@ -185,7 +190,12 @@ class LeaderTable extends React.Component {
               {current.achievementPoints ? current.achievementPoints : 0}
             </td>
             <td style={tdStyle}>
-              <Filler percentage={(current.achievementPoints / 2000) * 100} />
+              <Filler
+                percentage={
+                  Math.floor((current.achievementPoints / maxScore) * 1000) / 10
+                }
+                score={current.achievementPoints}
+              />
             </td>
           </LeaderTableItem>
         );
@@ -305,7 +315,7 @@ class Filler extends React.Component {
           background: this.changeColor()
         }}
       >
-        <p style={{ fontWeight: "100" }}>{this.props.percentage}</p>
+        <p style={{ fontWeight: "100" }}>{this.props.percentage}%</p>
       </div>
     );
   }

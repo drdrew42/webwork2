@@ -188,10 +188,12 @@ sub body {
 
 	my $courseName = $ce->{courseName};
 	my $site_url = $ce->{webworkURLs}->{htdocs};
+	my $achievementPPP = $ce->{achievementPointsPerProblem};
 
 	# stash the courseName for use in js later...
 	print "<input type=\"hidden\" id=\"courseName\" value=\"$courseName\">";
 	print "<input type=\"hidden\" id=\"site_url\" value=\"$site_url\">";
+	print "<input type=\"hidden\" id=\"achievementPPP\" value=\"$achievementPPP\">";
 
 	# this is a place where the maximum achievement points may be calculated
 	# then stash the max value in a hidden input field for js to access...
@@ -199,7 +201,7 @@ sub body {
 	# print the leaderboard div and call the js to fill it in
 	print CGI::div({id=>'LeaderboardPage'});
 
-	print CGI::start_script({type=>"text/javascript", src=>"$site_url/js/apps/Leaderboard/leaderboard.rel.js"}), CGI::end_script();
+	print CGI::start_script({type=>"text/javascript", src=>"$site_url/js/apps/Leaderboard/leaderboard.js"}), CGI::end_script();
 
   return "";
 
