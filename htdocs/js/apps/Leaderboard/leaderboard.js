@@ -199,7 +199,7 @@ var LeaderTable = function (_React$Component) {
             React.createElement(
               "td",
               { className: "tdStyleLB" },
-              current.username ? current.username : current.id
+              current.username ? current.username : "Anonymous"
             ),
             React.createElement(
               "td",

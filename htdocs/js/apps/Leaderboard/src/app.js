@@ -184,7 +184,7 @@ class LeaderTable extends React.Component {
         tableInfo.push(
           <LeaderTableItem>
             <td className="tdStyleLB">
-              {current.username ? current.username : current.id}
+              {current.username ? current.username : "Anonymous"}
             </td>
             <td className="tdStyleLB">{current.achievementsEarned}</td>
             <td className="tdStyleLB">
