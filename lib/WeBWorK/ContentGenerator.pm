@@ -1771,8 +1771,8 @@ sub feedbackMacro_form {
 	my $counter = 1;
 	foreach my $emailAddress (@recipients) {
 		my ($emailName,$emailAdd) = split($emailAddress,"\<",2);
-		if ($emailAdd) { $emailAdd =~ s/\>//; }
-		if ($emailName) { $emailName =~ s/"//; }
+		$emailAdd =~ s/\>//;
+		$emailName =~ s/"//;
 		$result .= CGI::hidden("emailName$counter",$emailName) . "\n";
 		$result .= CGI::hidden("emailAddress$counter",$emailAdd) . "\n";
 #		$result .= CGI::hidden("emailFull$counter",$emailAddress) . "\n";
