@@ -1,7 +1,7 @@
 <?php
   define('DB_HOST', 'localhost');
   define('DB_NAME', 'webwork');
-  define('DB_USER', 'webworkRead');
+  define('DB_USER', 'webworkWrite');
   define('DB_PASS', 'passwordRW');
 
   global $conn;
