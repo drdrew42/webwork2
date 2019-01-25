@@ -182,7 +182,7 @@ class LeaderTable extends React.Component {
       for (var i = 0; i < this.state.data.length; i++) {
         var current = this.state.data[i];
         tableInfo.push(
-          <LeaderTableItem>
+          <LeaderTableItem rID={current.id}>
             <td className="tdStyleLB">
               {current.username ? current.username : "Anonymous"}
             </td>
@@ -259,6 +259,7 @@ class LeaderTable extends React.Component {
 class LeaderTableItem extends React.Component {
   render() {
     let { LeaderItemTrStyle } = styles;
+    if (this.props.rID == user) { return <tr className="LeaderItemTr myRow">{this.props.children}</tr>; }
     return <tr className="LeaderItemTr">{this.props.children}</tr>;
   }
 }

@@ -109,6 +109,8 @@ sub head {
 
 	print "<link crossorigin=\"anonymous\" media=\"all\" href=\"https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css\" rel=\"stylesheet\" />";
 
+	print "<link href=\"https://fonts.googleapis.com/css?family=Luckiest+Guy\" rel=\"stylesheet\" />";
+
 	return "";
 }
 
