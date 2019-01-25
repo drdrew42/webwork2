@@ -195,11 +195,11 @@ var LeaderTable = function (_React$Component) {
           var current = this.state.data[i];
           tableInfo.push(React.createElement(
             LeaderTableItem,
-            null,
+            { rID: current.id },
             React.createElement(
               "td",
               { className: "tdStyleLB" },
-              current.username ? current.username : current.id
+              current.username ? current.username : "Anonymous"
             ),
             React.createElement(
               "td",
@@ -309,6 +309,13 @@ var LeaderTableItem = function (_React$Component2) {
     value: function render() {
       var LeaderItemTrStyle = styles.LeaderItemTrStyle;
 
+      if (this.props.rID == user) {
+        return React.createElement(
+          "tr",
+          { className: "LeaderItemTr myRow" },
+          this.props.children
+        );
+      }
       return React.createElement(
         "tr",
         { className: "LeaderItemTr" },
