@@ -34,7 +34,7 @@ class LeaderTable extends React.Component {
     this.checkOption = this.checkOption.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
 
     const requestObject = {
       user,
@@ -51,7 +51,8 @@ class LeaderTable extends React.Component {
         });
         maxScore =
           parseInt(data[0].numOfProblems)*parseInt(pointsPerProblem)+parseInt(data[0].achievementPtsSum);
-        this.setState({ data: data });
+	data.sort((a, b) => b.achievementPoints - a.achievementPoints);
+        this.setState({ data: data, current: "progress" });
       },
       "json"
     );
