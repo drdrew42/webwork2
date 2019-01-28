@@ -2,22 +2,16 @@
 let user = null;
 let key = null;
 
-// uncomment the following two lines,
-// replace courseinfo.name with courseName
-// replace hard-coded leaderboard URL,
-// and place leaderboard.php in /opt/webwork/webwork2/htdocs/js/apps/Leaderboard/
-// along with "compiled" version of this app.js
-
+// get static values from webwork
 const courseName = document.getElementById("courseName").value;
 const leaderboardURL =
   document.getElementById("site_url").value +
   "/js/apps/Leaderboard/leaderboard.php";
-
-// to do: construct maxExperience in Leaderboards.pm and stash it in id='maxExperience'
-// then uncomment this bad boy
 const pointsPerProblem = document.getElementById('achievementPPP').value;
 let maxScore = 0;
 
+// we must pull the user + key to authenticate for php
+// php script is set to require a valid user/key pair
 function checkCookies() {
   const value = getCookie(`WeBWorKCourseAuthen.${courseName}`); // getCookie defined at the bottom
   user = value.split("\t")[0];
@@ -27,64 +21,6 @@ if (!user & !key) {
   checkCookies();
 }
 
-// is it possible to move this css to a leaderboard.css file?
-// along with the css styles from the Leaderboards.tmpl file?
-// place combined leaderboard.css file in /opt/webwork/webwork2/htdocs/js/apps/Leaderboard
-
-const styles = {
-  tableStyle: {
-    width: "100%",
-    tableLayout: "fixed",
-    borderSpacing: "0px",
-    border: "1px solid #e6e6e6",
-    boxShadow:
-      "0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0 rgba(0, 0, 0, .12), 0 3px 5px -1px rgba(0, 0, 0, .2)"
-  },
-  pStyle: {
-    fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
-    fontWeight: "300",
-    fontSize: "13px",
-    textAlign: "center",
-    paddingRight: "10%"
-  },
-  buttonStyle: {
-    background: "none",
-    color: "inherit",
-    border: "none",
-    padding: 0,
-    font: "inherit",
-    cursor: "pointer",
-    outline: "inherit"
-  },
-  divStyle: {
-    overflowY: "auto",
-    height: "80%",
-    width: "70%",
-    minWidth: "550px"
-  },
-  thStyle: {
-    backgroundColor: "#003388",
-    color: "white",
-    fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
-    padding: "15px",
-    cursor: "pointer"
-  },
-  tdStyle: {
-    textAlign: "center",
-    padding: "15px"
-  },
-  trStyle: {
-    height: "2%"
-  },
-  LeaderItemTrStyle: {
-    backgroundColor: "#f6f6f6",
-    color: "black",
-    fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
-    fontWeight: "300",
-    padding: "15px",
-    borderSpacing: "2px"
-  }
-};
 class LeaderTable extends React.Component {
   constructor() {
     super();
@@ -99,34 +35,12 @@ class LeaderTable extends React.Component {
   }
 
   componentWillMount() {
+
     const requestObject = {
       user,
       key,
       courseName: courseName
     };
-    // The url  needs to be taken from a global environment variable
-    // This would idealy be a variable in the leaderboards.tmpl file
-    // leaderboard.php should be placed in /var/www/html/
-    // fetch("http://mathww.citytech.cuny.edu/leaderboard.php", {
-    //   method: "POST",
-    //   headers: { "Content-type": "application/x-www-form-urlencoded" },
-    //   body: formEncode(requestObject) // formEncode defined at the bottom
-    // })
-    //   .then(response => {
-    //     if (!response.ok) {
-    //       throw Error(response.statusText);
-    //     }
-    //     return response.json();
-    //   })
-    //   .then(data => {
-    //     data.forEach(item => {
-    //       if (item.achievementPoints == null) item.achievementPoints = 0;
-    //     });
-    //     this.setState({ data });
-    //   })
-    //   .catch(err => {
-    //     console.log("An error has occurred: " + err);
-    //   });
 
     $.post(
       leaderboardURL,
@@ -142,6 +56,7 @@ class LeaderTable extends React.Component {
       "json"
     );
   }
+
   checkOption(option) {
     this.setState({ clicks: this.state.clicks + 1 });
     let newData = this.state.data;
@@ -152,7 +67,7 @@ class LeaderTable extends React.Component {
         );
       });
       if (this.state.current == "Point") this.setState({ clicks: 0 });
-    } else if (option.target.id == "Point") {
+    } else if (option.target.id == "Point" || option.target.id == "progress") {
       newData.sort(function(a, b) {
         return (
           parseFloat(a.achievementPoints) - parseFloat(b.achievementPoints)
@@ -176,7 +91,6 @@ class LeaderTable extends React.Component {
   }
 
   renderTable() {
-    let { tdStyle } = styles;
     let tableInfo = [];
     if (this.state.data.length > 0) {
       for (var i = 0; i < this.state.data.length; i++) {
@@ -205,20 +119,20 @@ class LeaderTable extends React.Component {
     return tableInfo;
   }
   render() {
-    let { tableStyle, thStyle, tdStyle, trStyle, divStyle, pStyle } = styles;
+
     let tableInfo = this.renderTable();
 
     return (
-      <div className="divStyleLB">
-        <table className="tableStyleLB">
-          <tbody>
-            <tr className="trStyleLB">
-              <th id="username" className="thStyleLB">
+      <div className="lbContainer">
+        <table className="lbTable">
+	<caption>Sponsored by Santander Bank</caption>
+          <thead>
+            <tr>
+              <th id="username">
                 Username
               </th>
               <th
-                className="sortButtons thStyleLB"
-                style={thStyle}
+                className="sortButtons"
                 id="Earned"
                 onClick={this.checkOption}
               >
@@ -232,8 +146,7 @@ class LeaderTable extends React.Component {
                 ) : null}
               </th>
               <th
-                className="sortButtons thStyleLB"
-                style={thStyle}
+                className="sortButtons"
                 id="Point"
                 onClick={this.checkOption}
               >
@@ -246,9 +159,22 @@ class LeaderTable extends React.Component {
                   )
                 ) : null}
               </th>
-              <th className="thStyleLB">Progress</th>
+              <th
+		className="sortButtons" 
+		id="progress"
+                onClick={this.checkOption}
+              >
+                Achievement Points Collected
+                {this.state.current == "progress" ? (
+                  this.state.currentSort == "Asc" ? (
+                    <i className="ion-android-arrow-dropup" />
+                  ) : (
+                    <i className="ion-android-arrow-dropdown" />
+                  )
+                ) : null}
+              </th>
             </tr>
-          </tbody>
+          </thead>
           <tbody>{tableInfo}</tbody>
         </table>
       </div>
@@ -258,28 +184,16 @@ class LeaderTable extends React.Component {
 
 class LeaderTableItem extends React.Component {
   render() {
-    let { LeaderItemTrStyle } = styles;
-    if (this.props.rID == user) { return <tr className="LeaderItemTr myRow">{this.props.children}</tr>; }
+    if (this.props.rID == user) { return <tr className="myRow">{this.props.children}</tr>; }
     return <tr className="LeaderItemTr">{this.props.children}</tr>;
   }
 }
 class Leaderboard extends React.Component {
   render() {
-    let {
-      tableStyle,
-      thStyle,
-      tdStyle,
-      trStyle,
-      divStyle,
-      pStyle,
-      LeaderItemTrStyle
-    } = styles;
+
     return (
       <div>
         <LeaderTable />
-        <p className="pStyleLB">
-          <i>Sponsored by Santander Bank</i>
-        </p>
       </div>
     );
   }
@@ -307,14 +221,19 @@ class Filler extends React.Component {
   }
   render() {
     return (
-      <div
-        className="filler"
+      <div className="fillerContainer">
+	<span className="fillerBar"
         style={{
           width: `${this.props.percentage}%`,
           background: this.changeColor()
         }}
-      >
-        <p style={{ fontWeight: "100" }}>{this.props.percentage}%</p>
+        ></span>
+        <div className="fillerLabel"
+	style={{
+	  left: `${this.props.percentage}%`
+	}}>
+          {this.props.percentage}%
+        </div>	
       </div>
     );
   }
