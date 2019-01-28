@@ -49,8 +49,8 @@ var LeaderTable = function (_React$Component) {
   }
 
   _createClass(LeaderTable, [{
-    key: "componentWillMount",
-    value: function componentWillMount() {
+    key: "componentDidMount",
+    value: function componentDidMount() {
       var _this2 = this;
 
       var requestObject = {
@@ -64,7 +64,10 @@ var LeaderTable = function (_React$Component) {
           if (item.achievementPoints == null) item.achievementPoints = 0;
         });
         maxScore = parseInt(data[0].numOfProblems) * parseInt(pointsPerProblem) + parseInt(data[0].achievementPtsSum);
-        _this2.setState({ data: data });
+        data.sort(function (a, b) {
+          return b.achievementPoints - a.achievementPoints;
+        });
+        _this2.setState({ data: data, current: "progress" });
       }, "json");
     }
   }, {
