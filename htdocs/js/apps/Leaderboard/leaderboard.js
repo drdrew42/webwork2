@@ -12,20 +12,14 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var user = null;
 var key = null;
 
-// uncomment the following two lines,
-// replace courseinfo.name with courseName
-// replace hard-coded leaderboard URL,
-// and place leaderboard.php in /opt/webwork/webwork2/htdocs/js/apps/Leaderboard/
-// along with "compiled" version of this app.js
-
+// get static values from webwork
 var courseName = document.getElementById("courseName").value;
 var leaderboardURL = document.getElementById("site_url").value + "/js/apps/Leaderboard/leaderboard.php";
-
-// to do: construct maxExperience in Leaderboards.pm and stash it in id='maxExperience'
-// then uncomment this bad boy
 var pointsPerProblem = document.getElementById('achievementPPP').value;
 var maxScore = 0;
 
+// we must pull the user + key to authenticate for php
+// php script is set to require a valid user/key pair
 function checkCookies() {
   var value = getCookie("WeBWorKCourseAuthen." + courseName); // getCookie defined at the bottom
   user = value.split("\t")[0];
@@ -34,64 +28,6 @@ function checkCookies() {
 if (!user & !key) {
   checkCookies();
 }
-
-// is it possible to move this css to a leaderboard.css file?
-// along with the css styles from the Leaderboards.tmpl file?
-// place combined leaderboard.css file in /opt/webwork/webwork2/htdocs/js/apps/Leaderboard
-
-var styles = {
-  tableStyle: {
-    width: "100%",
-    tableLayout: "fixed",
-    borderSpacing: "0px",
-    border: "1px solid #e6e6e6",
-    boxShadow: "0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0 rgba(0, 0, 0, .12), 0 3px 5px -1px rgba(0, 0, 0, .2)"
-  },
-  pStyle: {
-    fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
-    fontWeight: "300",
-    fontSize: "13px",
-    textAlign: "center",
-    paddingRight: "10%"
-  },
-  buttonStyle: {
-    background: "none",
-    color: "inherit",
-    border: "none",
-    padding: 0,
-    font: "inherit",
-    cursor: "pointer",
-    outline: "inherit"
-  },
-  divStyle: {
-    overflowY: "auto",
-    height: "80%",
-    width: "70%",
-    minWidth: "550px"
-  },
-  thStyle: {
-    backgroundColor: "#003388",
-    color: "white",
-    fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
-    padding: "15px",
-    cursor: "pointer"
-  },
-  tdStyle: {
-    textAlign: "center",
-    padding: "15px"
-  },
-  trStyle: {
-    height: "2%"
-  },
-  LeaderItemTrStyle: {
-    backgroundColor: "#f6f6f6",
-    color: "black",
-    fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
-    fontWeight: "300",
-    padding: "15px",
-    borderSpacing: "2px"
-  }
-};
 
 var LeaderTable = function (_React$Component) {
   _inherits(LeaderTable, _React$Component);
@@ -122,29 +58,6 @@ var LeaderTable = function (_React$Component) {
         key: key,
         courseName: courseName
       };
-      // The url  needs to be taken from a global environment variable
-      // This would idealy be a variable in the leaderboards.tmpl file
-      // leaderboard.php should be placed in /var/www/html/
-      // fetch("http://mathww.citytech.cuny.edu/leaderboard.php", {
-      //   method: "POST",
-      //   headers: { "Content-type": "application/x-www-form-urlencoded" },
-      //   body: formEncode(requestObject) // formEncode defined at the bottom
-      // })
-      //   .then(response => {
-      //     if (!response.ok) {
-      //       throw Error(response.statusText);
-      //     }
-      //     return response.json();
-      //   })
-      //   .then(data => {
-      //     data.forEach(item => {
-      //       if (item.achievementPoints == null) item.achievementPoints = 0;
-      //     });
-      //     this.setState({ data });
-      //   })
-      //   .catch(err => {
-      //     console.log("An error has occurred: " + err);
-      //   });
 
       $.post(leaderboardURL, requestObject, function (data) {
         data.forEach(function (item) {
@@ -164,7 +77,7 @@ var LeaderTable = function (_React$Component) {
           return parseFloat(a.achievementsEarned) - parseFloat(b.achievementsEarned);
         });
         if (this.state.current == "Point") this.setState({ clicks: 0 });
-      } else if (option.target.id == "Point") {
+      } else if (option.target.id == "Point" || option.target.id == "progress") {
         newData.sort(function (a, b) {
           return parseFloat(a.achievementPoints) - parseFloat(b.achievementPoints);
         });
@@ -187,8 +100,6 @@ var LeaderTable = function (_React$Component) {
   }, {
     key: "renderTable",
     value: function renderTable() {
-      var tdStyle = styles.tdStyle;
-
       var tableInfo = [];
       if (this.state.data.length > 0) {
         for (var i = 0; i < this.state.data.length; i++) {
@@ -227,37 +138,35 @@ var LeaderTable = function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var tableStyle = styles.tableStyle,
-          thStyle = styles.thStyle,
-          tdStyle = styles.tdStyle,
-          trStyle = styles.trStyle,
-          divStyle = styles.divStyle,
-          pStyle = styles.pStyle;
 
       var tableInfo = this.renderTable();
 
       return React.createElement(
         "div",
-        { className: "divStyleLB" },
+        { className: "lbContainer" },
         React.createElement(
           "table",
-          { className: "tableStyleLB" },
+          { className: "lbTable" },
           React.createElement(
-            "tbody",
+            "caption",
+            null,
+            "Sponsored by Santander Bank"
+          ),
+          React.createElement(
+            "thead",
             null,
             React.createElement(
               "tr",
-              { className: "trStyleLB" },
+              null,
               React.createElement(
                 "th",
-                { id: "username", className: "thStyleLB" },
+                { id: "username" },
                 "Username"
               ),
               React.createElement(
                 "th",
                 {
-                  className: "sortButtons thStyleLB",
-                  style: thStyle,
+                  className: "sortButtons",
                   id: "Earned",
                   onClick: this.checkOption
                 },
@@ -267,8 +176,7 @@ var LeaderTable = function (_React$Component) {
               React.createElement(
                 "th",
                 {
-                  className: "sortButtons thStyleLB",
-                  style: thStyle,
+                  className: "sortButtons",
                   id: "Point",
                   onClick: this.checkOption
                 },
@@ -277,8 +185,13 @@ var LeaderTable = function (_React$Component) {
               ),
               React.createElement(
                 "th",
-                { className: "thStyleLB" },
-                "Progress"
+                {
+                  className: "sortButtons",
+                  id: "progress",
+                  onClick: this.checkOption
+                },
+                "Achievement Points Collected",
+                this.state.current == "progress" ? this.state.currentSort == "Asc" ? React.createElement("i", { className: "ion-android-arrow-dropup" }) : React.createElement("i", { className: "ion-android-arrow-dropdown" }) : null
               )
             )
           ),
@@ -307,12 +220,10 @@ var LeaderTableItem = function (_React$Component2) {
   _createClass(LeaderTableItem, [{
     key: "render",
     value: function render() {
-      var LeaderItemTrStyle = styles.LeaderItemTrStyle;
-
       if (this.props.rID == user) {
         return React.createElement(
           "tr",
-          { className: "LeaderItemTr myRow" },
+          { className: "myRow" },
           this.props.children
         );
       }
@@ -339,27 +250,11 @@ var Leaderboard = function (_React$Component3) {
   _createClass(Leaderboard, [{
     key: "render",
     value: function render() {
-      var tableStyle = styles.tableStyle,
-          thStyle = styles.thStyle,
-          tdStyle = styles.tdStyle,
-          trStyle = styles.trStyle,
-          divStyle = styles.divStyle,
-          pStyle = styles.pStyle,
-          LeaderItemTrStyle = styles.LeaderItemTrStyle;
 
       return React.createElement(
         "div",
         null,
-        React.createElement(LeaderTable, null),
-        React.createElement(
-          "p",
-          { className: "pStyleLB" },
-          React.createElement(
-            "i",
-            null,
-            "Sponsored by Santander Bank"
-          )
-        )
+        React.createElement(LeaderTable, null)
       );
     }
   }]);
@@ -402,16 +297,19 @@ var Filler = function (_React$Component4) {
     value: function render() {
       return React.createElement(
         "div",
-        {
-          className: "filler",
+        { className: "fillerContainer" },
+        React.createElement("span", { className: "fillerBar",
           style: {
             width: this.props.percentage + "%",
             background: this.changeColor()
           }
-        },
+        }),
         React.createElement(
-          "p",
-          { style: { fontWeight: "100" } },
+          "div",
+          { className: "fillerLabel",
+            style: {
+              left: this.props.percentage + "%"
+            } },
           this.props.percentage,
           "%"
         )
