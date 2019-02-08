@@ -7,6 +7,7 @@ $(document).ready(function() {
 			while ((document.getElementById("AnSwEr000" + i)) != null) {
 				var input = document.getElementById("AnSwEr000" + i);
 				var newSpan = document.createElement('span');
+				var origText = (' ' + input.value).slice(1);
 				newSpan.id = "AnSwEr000" + i + "-mq";
 				var cfgOptions = {
 				  spaceBehavesLikeTab: true,
@@ -29,10 +30,9 @@ $(document).ready(function() {
 				input.style.display = "none"; // hide the <input>
 				input.parentNode.insertBefore(newSpan, input); // use the mathSpan instead
 				answerField = MQ.MathField(newSpan,cfgOptions); // convert the span
-				if (input.value){
-					answerField.typedText(input.value); // initialize with previous answer
-				}
-				answerField.data.parentID = "AnSwEr000" + i; // store the ID for the "real" answer blank
+				answerField.data.parentID = "AnSwEr000" + i;
+				answerField.data.origText = origText;
+				answerField.typedText(origText); // initialize with previous answer
 				i++;	
 			}
 
