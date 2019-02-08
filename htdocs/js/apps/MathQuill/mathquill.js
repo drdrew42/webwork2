@@ -2179,8 +2179,12 @@ Controller.open(function(_) {
   _.typedText = function(ch) {
     if (ch === '\n') return this.handle('enter');
     var cursor = this.notify().cursor;
-    cursor.parent.write(cursor, ch);
-    this.scrollHoriz();
+    if (ch === ' ' && this.options.spaceBehavesLikeTab) {
+      if (cursor.parent !== this.root) cursor.parent.moveOutOf(R, cursor);
+    } else {
+      cursor.parent.write(cursor, ch);
+      this.scrollHoriz();
+    }
   };
   _.cut = function() {
     var ctrlr = this, cursor = ctrlr.cursor;
@@ -3901,7 +3905,7 @@ LatexCmds.fraction = P(MathCommand, function(_, super_) {
       var l = (block.ends[dir] && block.ends[dir].text() !== " ") && block.ends[dir].text();
       return l ? (l.length === 1 ? l : '(' + l + ')') : blankDefault;
     }
-    return text(L, this) + '/' + text(R, this);
+    return text(L, this) + '/' + text(R, this) + ' ';
   };
   _.finalizeTree = function() {
     this.upInto = this.ends[R].upOutOf = this.ends[L];

@@ -8,10 +8,6 @@ $(document).ready(function() {
 				var input = document.getElementById("AnSwEr000" + i);
 				var newSpan = document.createElement('span');
 				newSpan.id = "AnSwEr000" + i + "-mq";
-				if (input.value){
-					var node = math.parse(input.value); // parse previous student answer
-					newSpan.innerHTML = node.toTex().replace( /~/g, " "); // initialize with TeX'd version
-				}
 				var cfgOptions = {
 				  spaceBehavesLikeTab: true,
 				  leftRightIntoCmdGoes: 'up',
@@ -33,6 +29,9 @@ $(document).ready(function() {
 				input.style.display = "none"; // hide the <input>
 				input.parentNode.insertBefore(newSpan, input); // use the mathSpan instead
 				answerField = MQ.MathField(newSpan,cfgOptions); // convert the span
+				if (input.value){
+					answerField.typedText(input.value); // initialize with previous answer
+				}
 				answerField.data.parentID = "AnSwEr000" + i; // store the ID for the "real" answer blank
 				i++;	
 			}
