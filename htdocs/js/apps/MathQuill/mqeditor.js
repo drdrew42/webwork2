@@ -20,7 +20,7 @@ $(document).ready(function() {
 				  supSubsRequireOperand: true,
 				  charsThatBreakOutOfSupSub: '+-=<>',
 				  autoSubscriptNumerals: true,
-				  autoCommands: 'pi sqrt abs root vert',
+				  autoCommands: 'pi sqrt abs root vert inf union',
 				  // autoOperatorNames: 'sin cos tan',
 				  maxDepth: 10,
 				  handlers: {
