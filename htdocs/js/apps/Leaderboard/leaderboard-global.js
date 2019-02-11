@@ -161,9 +161,6 @@ var LeaderTable = function (_React$Component) {
       if (this.state.data.length > 0) {
         for (var i = 0; i < this.state.data.length; i++) {
           var current = this.state.data[i];
-          if (current.ours == 0 && this.state.view != 'Local') {
-            next;
-          }
           if (tableInfo.length >= 50) {
             break;
           }

@@ -136,7 +136,6 @@ class LeaderTable extends React.Component {
     if (this.state.data.length > 0) {
       for (var i = 0; i < this.state.data.length; i++) {
         var current = this.state.data[i];
-        if (current.ours == 0 && this.state.view != 'Local') {next;}
 	if (tableInfo.length >= 50) {break;}
 	var keyHash = current.id.substring(0,4)+current.uid.substring(5);
         tableInfo.push(
