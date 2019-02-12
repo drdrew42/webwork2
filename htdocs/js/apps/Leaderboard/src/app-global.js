@@ -138,8 +138,9 @@ class LeaderTable extends React.Component {
         var current = this.state.data[i];
 	if (tableInfo.length >= 50) {break;}
 	var keyHash = current.id.substring(0,4)+current.uid.substring(5);
+	let itme = (current.uid === this.state.ourUID);
         tableInfo.push(
-          <LeaderTableItem rID={current.id} key={keyHash}>
+          <LeaderTableItem rID={itme} key={keyHash}>
             <td className="tdStyleLB">
               {current.username ? current.username : "Anonymous"}
             </td>
@@ -164,7 +165,7 @@ class LeaderTable extends React.Component {
   renderFoot() {    
     let current = this.state.data.find(item => item.uid == this.state.ourUID)||{};
     let footer = 
-          <LeaderTableItem rID={current.uid} key={keyHash}>
+          <LeaderTableItem rID={true}>
             <td className="tdStyleLB">
               $num;{this.state.place} {current.username ? current.username : "Anonymous"}
             </td>
@@ -186,7 +187,7 @@ class LeaderTable extends React.Component {
   render() {
 
     let tableBody = this.renderBody();
-    let tableFoot = (this.state.ourUID > 0 && this.state.place > 50)?this.renderFoot():"";
+    let tableFoot = (parseInt(this.state.ourUID) > 0 && this.state.place > 50)?this.renderFoot():"";
 
     return (
       <div className="lbContainer">
@@ -258,7 +259,7 @@ class LeaderTable extends React.Component {
 
 class LeaderTableItem extends React.Component {
   render() {
-    if (this.props.rID == user) { return <tr className="myRow">{this.props.children}</tr>; }
+    if (rID) { return <tr className="myRow">{this.props.children}</tr>; }
     return <tr className="LeaderItemTr">{this.props.children}</tr>;
   }
 }

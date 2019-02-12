@@ -165,9 +165,10 @@ var LeaderTable = function (_React$Component) {
             break;
           }
           var keyHash = current.id.substring(0, 4) + current.uid.substring(5);
+          var itme = current.uid === this.state.ourUID;
           tableInfo.push(React.createElement(
             LeaderTableItem,
-            { rID: current.id, key: keyHash },
+            { rID: itme, key: keyHash },
             React.createElement(
               "td",
               { className: "tdStyleLB" },
@@ -205,7 +206,7 @@ var LeaderTable = function (_React$Component) {
       }) || {};
       var footer = React.createElement(
         LeaderTableItem,
-        { rID: current.uid, key: keyHash },
+        { rID: true },
         React.createElement(
           "td",
           { className: "tdStyleLB" },
@@ -239,7 +240,7 @@ var LeaderTable = function (_React$Component) {
     value: function render() {
 
       var tableBody = this.renderBody();
-      var tableFoot = this.state.ourUID > 0 && this.state.place > 50 ? this.renderFoot() : "";
+      var tableFoot = parseInt(this.state.ourUID) > 0 && this.state.place > 50 ? this.renderFoot() : "";
 
       return React.createElement(
         "div",
@@ -342,7 +343,7 @@ var LeaderTableItem = function (_React$Component2) {
   _createClass(LeaderTableItem, [{
     key: "render",
     value: function render() {
-      if (this.props.rID == user) {
+      if (rID) {
         return React.createElement(
           "tr",
           { className: "myRow" },

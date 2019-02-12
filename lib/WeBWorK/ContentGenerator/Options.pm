@@ -206,6 +206,8 @@ sub body {
 	if ($changeOptions and $newName) {
 		if ($authz->hasPermissions($userID, "change_email_address")) {
 			
+			$newName =~ s/[^!-~\s]{1}//g; # filter non-standard chars
+			$newName = substr($newName, 0, 12); # and keep it from getting out of hand
 			my $oldName = $EUser->comment;
 			$EUser->comment($newName);
 			eval { $db->putUser($EUser) };
@@ -235,7 +237,7 @@ sub body {
 				CGI::td(CGI::input({ type=>"text", readonly=>"true", id=>"currName", name=>"currName", value=>$EUser->comment})),
 			),
 			CGI::Tr({},
-				CGI::td(CGI::label({'for'=>'newName'},$r->maketext("[_1]'s New Name",$e_user_name))),
+				CGI::td(CGI::label({'for'=>'newName'},$r->maketext("[_1]'s New Display Name",$e_user_name))),
 #				CGI::td(CGI::textfield(-name=>"newAddress", -text=>$newA)),
 				CGI::td(CGI::textfield(-name=>"newName",-id,=>"newName")),
 			),
