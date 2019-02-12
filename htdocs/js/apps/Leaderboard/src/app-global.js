@@ -260,7 +260,7 @@ class LeaderTable extends React.Component {
 
 class LeaderTableItem extends React.Component {
   render() {
-    if (rID) { return <tr className="myRow">{this.props.children}</tr>; }
+    if (this.props.rID) { return <tr className="myRow">{this.props.children}</tr>; }
     return <tr className="LeaderItemTr">{this.props.children}</tr>;
   }
 }

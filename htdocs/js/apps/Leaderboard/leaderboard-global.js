@@ -344,7 +344,7 @@ var LeaderTableItem = function (_React$Component2) {
   _createClass(LeaderTableItem, [{
     key: "render",
     value: function render() {
-      if (rID) {
+      if (this.props.rID) {
         return React.createElement(
           "tr",
           { className: "myRow" },
