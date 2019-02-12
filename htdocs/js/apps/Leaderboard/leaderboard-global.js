@@ -111,9 +111,9 @@ var LeaderTable = function (_React$Component) {
     key: "swapLocal",
     value: function swapLocal() {
       if (this.state.view === 'Local') {
-        this.setState({ view: 'Global', data: this.state.global });
+        this.setState({ view: 'Global', data: this.state.global, place: this.state.placeGlobal });
       } else {
-        this.setState({ view: 'Local', data: this.state.local });
+        this.setState({ view: 'Local', data: this.state.local, place: this.state.placeLocal });
       }
     }
   }, {

@@ -32,6 +32,7 @@
   table.lbTable tr td:nth-child(3) {
     display: none;
   }
+  table.lbTable tfoot td,
   table.lbTable thead th {
     background-color: #003388;
     color: white;
