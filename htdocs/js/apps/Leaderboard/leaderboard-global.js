@@ -204,15 +204,14 @@ var LeaderTable = function (_React$Component) {
       var current = this.state.data.find(function (item) {
         return item.uid == _this3.state.ourUID;
       }) || {};
-      var keyHash = current.id.substring(0, 4) + current.uid.substring(5);
+      var keyHash = current.uid;
       var footer = React.createElement(
         LeaderTableItem,
         { rID: true, key: keyHash },
         React.createElement(
           "td",
           { className: "tdStyleLB" },
-          "$num;",
-          this.state.place,
+          "#" + this.state.place,
           " ",
           current.username ? current.username : "Anonymous"
         ),

@@ -164,11 +164,11 @@ class LeaderTable extends React.Component {
 
   renderFoot() {    
     let current = this.state.data.find(item => item.uid == this.state.ourUID)||{};
-    let keyHash = current.id.substring(0,4)+current.uid.substring(5);
+    let keyHash = current.uid;
     let footer = 
           <LeaderTableItem rID={true} key={keyHash}>
             <td className="tdStyleLB">
-              $num;{this.state.place} {current.username ? current.username : "Anonymous"}
+              {"#" + this.state.place} {current.username ? current.username : "Anonymous"}
             </td>
             <td className="tdStyleLB">{current.achievementsEarned}</td>
             <td className="tdStyleLB">
