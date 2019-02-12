@@ -91,10 +91,10 @@ var LeaderTable = function (_React$Component) {
         /* grab the position of our user, -1 if not a student */
         var placeLocal = localData.map(function (item) {
           return item.uid;
-        }).indexOf(ourUID);
+        }).indexOf(ourUID) + 1;
         var placeGlobal = globalData.map(function (item) {
           return item.uid;
-        }).indexOf(ourUID);
+        }).indexOf(ourUID) + 1;
         _this2.setState({
           data: localData,
           local: localData,
@@ -102,6 +102,7 @@ var LeaderTable = function (_React$Component) {
           ourUID: ourUID,
           placeLocal: placeLocal,
           placeGlobal: placeGlobal,
+          place: placeLocal,
           current: "Progress",
           view: 'Local'
         });
@@ -139,10 +140,10 @@ var LeaderTable = function (_React$Component) {
       var newData = this.state.view == 'Local' ? newDataLocal : newDataGlobal;
       var placeLocal = newDataLocal.map(function (item) {
         return item.uid;
-      }).indexOf(this.state.ourUID);
+      }).indexOf(this.state.ourUID) + 1;
       var placeGlobal = newDataGlobal.map(function (item) {
         return item.uid;
-      }).indexOf(this.state.ourUID);
+      }).indexOf(this.state.ourUID) + 1;
       var newPlace = this.state.view == 'Local' ? placeLocal : placeGlobal;
       this.setState({
         data: newData,
@@ -172,6 +173,7 @@ var LeaderTable = function (_React$Component) {
             React.createElement(
               "td",
               { className: "tdStyleLB" },
+              itme ? "#" + this.state.place + " " : "",
               current.username ? current.username : "Anonymous"
             ),
             React.createElement(

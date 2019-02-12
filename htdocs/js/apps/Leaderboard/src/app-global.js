@@ -69,8 +69,8 @@ class LeaderTable extends React.Component {
 	globalData.sort((a, b) => b.progress - a.progress);
 	var localData = globalData.filter( (item,i,arr) => item.ours );
 	/* grab the position of our user, -1 if not a student */
-	const placeLocal = localData.map(item => item.uid).indexOf(ourUID);
-	const placeGlobal = globalData.map(item => item.uid).indexOf(ourUID);
+	const placeLocal = localData.map(item => item.uid).indexOf(ourUID) +1;
+	const placeGlobal = globalData.map(item => item.uid).indexOf(ourUID) +1;
         this.setState({ 
 	  data: localData, 
 	  local: localData, 
@@ -78,6 +78,7 @@ class LeaderTable extends React.Component {
 	  ourUID: ourUID,
 	  placeLocal: placeLocal,
 	  placeGlobal: placeGlobal,
+	  place: placeLocal,
 	  current: "Progress", 
 	  view: 'Local'
 	});
@@ -117,8 +118,8 @@ class LeaderTable extends React.Component {
     }
     let newDataLocal = newDataGlobal.filter( (item,i,arr)=>item.ours );
     let newData = (this.state.view == 'Local')?newDataLocal:newDataGlobal;
-    const placeLocal = newDataLocal.map(item => item.uid).indexOf(this.state.ourUID);
-    const placeGlobal = newDataGlobal.map(item => item.uid).indexOf(this.state.ourUID);
+    const placeLocal = newDataLocal.map(item => item.uid).indexOf(this.state.ourUID) +1;
+    const placeGlobal = newDataGlobal.map(item => item.uid).indexOf(this.state.ourUID) +1;
     let newPlace = (this.state.view == 'Local')?placeLocal:placeGlobal;
     this.setState({
       data: newData,
@@ -142,7 +143,7 @@ class LeaderTable extends React.Component {
         tableInfo.push(
           <LeaderTableItem rID={itme} key={keyHash}>
             <td className="tdStyleLB">
-              {current.username ? current.username : "Anonymous"}
+              {itme ? "#" + this.state.place + " " : ""}{current.username ? current.username : "Anonymous"}
             </td>
             <td className="tdStyleLB">{current.achievementsEarned}</td>
             <td className="tdStyleLB">
