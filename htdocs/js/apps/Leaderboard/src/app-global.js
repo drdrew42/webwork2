@@ -135,9 +135,9 @@ class LeaderTable extends React.Component {
     let tableInfo = [];
     if (this.state.data.length > 0) {
       for (var i = 0; i < this.state.data.length; i++) {
-        var current = this.state.data[i];
+        let current = this.state.data[i];
 	if (tableInfo.length >= 50) {break;}
-	var keyHash = current.id.substring(0,4)+current.uid.substring(5);
+	let keyHash = current.id.substring(0,4)+current.uid.substring(5);
 	let itme = (current.uid === this.state.ourUID);
         tableInfo.push(
           <LeaderTableItem rID={itme} key={keyHash}>
@@ -164,8 +164,9 @@ class LeaderTable extends React.Component {
 
   renderFoot() {    
     let current = this.state.data.find(item => item.uid == this.state.ourUID)||{};
+    let keyHash = current.id.substring(0,4)+current.uid.substring(5);
     let footer = 
-          <LeaderTableItem rID={true}>
+          <LeaderTableItem rID={true} key={keyHash}>
             <td className="tdStyleLB">
               $num;{this.state.place} {current.username ? current.username : "Anonymous"}
             </td>

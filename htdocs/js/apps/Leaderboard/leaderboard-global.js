@@ -204,9 +204,10 @@ var LeaderTable = function (_React$Component) {
       var current = this.state.data.find(function (item) {
         return item.uid == _this3.state.ourUID;
       }) || {};
+      var keyHash = current.id.substring(0, 4) + current.uid.substring(5);
       var footer = React.createElement(
         LeaderTableItem,
-        { rID: true },
+        { rID: true, key: keyHash },
         React.createElement(
           "td",
           { className: "tdStyleLB" },
