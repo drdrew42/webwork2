@@ -35,7 +35,6 @@
   
   
   function validateUser($conn, $user, $key, $courseName){
-      return true;
       $query = "SELECT user_id from `".$courseName."_key` WHERE user_id = '".$user."' AND key_not_a_keyword = '".$key."';";
       $result = $conn->query($query);
   
