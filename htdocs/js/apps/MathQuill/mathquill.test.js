@@ -3047,8 +3047,10 @@ var TextBlock = P(Node, function(_, super_) {
     cursor.show().deleteSelection();
 
     if (ch !== '$') {
+      // this.postOrder('reflow');
       if (!cursor[L]) TextPiece(ch).createLeftOf(cursor);
       else cursor[L].appendText(ch);
+      this.bubble('reflow'); 
     }
     else if (this.isEmpty()) {
       cursor.insRightOf(this);
@@ -8502,6 +8504,20 @@ suite('Public API', function() {
       var countBeforeClosingBracket = count;
       mq.typedText(']');
       assert.equal(count, countBeforeClosingBracket + 1);
+    });
+    test('fires in text-mode', function() {
+      var count = 0;
+      var mq = MQ.MathField($('<span>').appendTo('#mock')[0], {
+        handlers: {
+          edit: function() {
+            count += 1;
+          }
+        }
+      });
+      mq.typedText('\\text A');
+      var countBeforeTextMode = count;
+      mq.typedText('B');
+      assert.equal(count, countBeforeTextMode + 1);
     });
   });
 

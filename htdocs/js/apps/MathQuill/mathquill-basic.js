@@ -2982,13 +2982,13 @@ var Variable = P(Symbol, function(_, super_) {
         text = text.slice (0, -1);
       }
     } else {
-//      if (this[L] && !(this[L] instanceof Variable)
-//          && !(this[L] instanceof BinaryOperator)
-//          && this[L].ctrlSeq !== '\\ ')
-//        text = '*' + text;
-//      if (this[R] && !(this[R] instanceof BinaryOperator)
-//          && !(this[R] instanceof SupSub))
-//        text += '*';
+      if (this[L] && !(this[L] instanceof Variable)
+          && !(this[L] instanceof BinaryOperator)
+          && this[L].ctrlSeq !== '\\ ')
+        text = '*' + text;
+      if (this[R] && !(this[R] instanceof BinaryOperator)
+          && !(this[R] instanceof SupSub))
+        text += '*';
     }
     return text;
   };
@@ -3184,7 +3184,6 @@ var OperatorName = P(Symbol, function(_, super_) {
 });
 for (var fn in AutoOpNames) if (AutoOpNames.hasOwnProperty(fn)) {
   LatexCmds[fn] = OperatorName;
-  LatexCmds[fn].textTemplate = [fn + '(',')'];
 }
 LatexCmds.operatorname = P(MathCommand, function(_) {
   _.createLeftOf = noop;
@@ -4228,7 +4227,7 @@ bindCharBracketPair('[');
 bindCharBracketPair('{', '\\{');
 LatexCmds.langle = bind(Bracket, L, '&lang;', '&rang;', '\\langle ', '\\rangle ');
 LatexCmds.rangle = bind(Bracket, R, '&lang;', '&rang;', '\\langle ', '\\rangle ');
-LatexCmds.abs = bind(Bracket, L, '|', '|', '|', '|');
+CharCmds['|'] = bind(Bracket, L, '|', '|', '|', '|');
 LatexCmds.lVert = bind(Bracket, L, '&#8741;', '&#8741;', '\\lVert ', '\\rVert ');
 LatexCmds.rVert = bind(Bracket, R, '&#8741;', '&#8741;', '\\lVert ', '\\rVert ');
 

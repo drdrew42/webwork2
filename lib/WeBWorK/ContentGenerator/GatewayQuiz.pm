@@ -330,13 +330,13 @@ sub can_useWirisEditor {
     return $ce->{pg}->{specialPGEnvironmentVars}->{WirisEditor};
 }
 
+
 sub can_useMathQuill {
     my ($self, $User, $EffectiveUser, $Set, $Problem, $submitAnswers) = @_;
     my $ce= $self->r->ce;
 
     return $ce->{pg}->{specialPGEnvironmentVars}->{MathQuill};
 }
-
 ################################################################################
 # output utilities
 ################################################################################
@@ -1286,6 +1286,8 @@ sub pre_header_initialize {
 						    $set, $formFields,
 						    $ProblemN);
 		}
+		WeBWorK::ContentGenerator::ProblemUtil::ProblemUtil::insert_mathquill_responses($self, $pg)
+		if ($self->{will}->{useMathQuill});
 		push(@pg_results, $pg);
 	}
 	$self->{ra_problems} = \@problems;
@@ -2364,7 +2366,8 @@ sub getProblemHTML {
 				 sprintf("%04d",$problemNumber) . '_',
 			     },
 			     );
-	
+
+
 # FIXME  is problem_id the correct thing in the following two stanzas?
 # FIXME  the original version had "problem number", which is what we want.
 # FIXME  I think problem_id will work, too
@@ -2424,14 +2427,14 @@ sub output_JS{
 		print CGI::start_script({type=>"text/javascript", src=>"$site_url/js/apps/WirisEditor/mathml2webwork.js"}), CGI::end_script();
 	}
 
+
 	# MathQuill interface
 	if ($self->{will}->{useMathQuill}) {
 		print "<link href=\"$site_url/js/apps/MathQuill/mathquill.css\" rel=\"stylesheet\" />";
-		print CGI::start_script({type=>"text/javascript", src=>"$site_url/js/apps/math/math.min.js"}), CGI::end_script();
-		print CGI::start_script({type=>"text/javascript", src=>"$site_url/js/apps/MathQuill/mathquill.js"}), CGI::end_script();
+		print "<link href=\"$site_url/js/apps/MathQuill/mqeditor.css\" rel=\"stylesheet\" />";
+        print CGI::start_script({type=>"text/javascript", src=>"$site_url/js/apps/MathQuill/mathquill.min.js"}), CGI::end_script();
 		print CGI::start_script({type=>"text/javascript", src=>"$site_url/js/apps/MathQuill/mqeditor.js"}), CGI::end_script();
 	}
-
 	print CGI::start_script({type=>"text/javascript", src=>"$site_url/js/vendor/other/knowl.js"}),CGI::end_script();
 	#This is for page specfific js
 	print CGI::start_script({type=>"text/javascript", src=>"$site_url/js/apps/GatewayQuiz/gateway.js"}), CGI::end_script();

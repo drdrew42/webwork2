@@ -615,7 +615,7 @@ sub pre_header_initialize {
 							  || $ce->{pg}->{options}->{showSolutions}, #set to 0 in defaults.config
 	        useMathView        => $user->useMathView ne '' ? $user->useMathView : $ce->{pg}->{options}->{useMathView},
 	        useWirisEditor     => $ce->{pg}->{options}->{useWirisEditor},
-	        useMathQuill       => $user->useMathQuill ne '' ? $user->useMathQuill : $ce->{pg}->{options}->{useMathQuill},
+	        useMathQuill       => $ce->{pg}->{options}->{useMathQuill},
 		recordAnswers      => $submitAnswers,
 		checkAnswers       => $checkAnswers,
 		getSubmitButton    => 1,
@@ -780,6 +780,9 @@ sub pre_header_initialize {
 	$self->{can}  = \%can;
 	$self->{will} = \%will;
 	$self->{pg} = $pg;
+
+	WeBWorK::ContentGenerator::ProblemUtil::ProblemUtil::insert_mathquill_responses($self, $pg)
+	if ($self->{will}->{useMathQuill});
 
 	#### process and log answers ####
 	$self->{scoreRecordedMessage} = WeBWorK::ContentGenerator::ProblemUtil::ProblemUtil::process_and_log_answer($self) || "";
@@ -2184,10 +2187,10 @@ sub output_JS{
 		print CGI::start_script({type=>"text/javascript", src=>"$site_url/js/apps/WirisEditor/wiriseditor.js"}), CGI::end_script();
 		print CGI::start_script({type=>"text/javascript", src=>"$site_url/js/apps/WirisEditor/mathml2webwork.js"}), CGI::end_script();
 	}
-	
+
 	# MathQuill live rendering 
 	if ($self->{will}->{useMathQuill}) {
-		print CGI::start_script({type=>"text/javascript", src=>"$site_url/js/apps/MathQuill/mathquill.js"}), CGI::end_script();
+		print CGI::start_script({type=>"text/javascript", src=>"$site_url/js/apps/MathQuill/mathquill.min.js"}), CGI::end_script();
 		print CGI::start_script({type=>"text/javascript", src=>"$site_url/js/apps/MathQuill/mqeditor.js"}), CGI::end_script();
 	}
 	
@@ -2235,7 +2238,8 @@ sub output_CSS {
 	
 	#style for mathquill
 	if ($self->{will}->{useMathQuill}) {
-	    print "<link href=\"$site_url/js/apps/MathQuill/mathquill.css\" rel=\"stylesheet\" />";
+		print "<link href=\"$site_url/js/apps/MathQuill/mathquill.css\" rel=\"stylesheet\" />";
+		print "<link href=\"$site_url/js/apps/MathQuill/mqeditor.css\" rel=\"stylesheet\" />";
 	}
 	
 	return "";
