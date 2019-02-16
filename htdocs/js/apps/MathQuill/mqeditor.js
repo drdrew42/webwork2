@@ -62,10 +62,10 @@ function createAnswerQuill() {
 		exponent: { latex: '^', tooltip: 'exponent (^)', icon: '\\text{\ \ }^\\text{\ \ }' },
 		infty: { latex: '\\infty', tooltip: 'infinity (inf)', icon: '\\infty' },
 		pi: { latex: '\\pi', tooltip: 'pi (pi)', icon: '\\pi' },
-		cap: { latex: '\\cap', tooltip: 'intersection (\\cap)', icon: '\\cap' },
 		cup: { latex: '\\cup', tooltip: 'union (union)', icon: '\\cup' },
 		leq: { latex: '\\leq', tooltip: 'less than or equal (\\leq)', icon: '\\leq' },
-		geq: { latex: '\\geq', tooltip: 'Greater Than or Equal (\\geq)', icon: '\\geq' }
+		geq: { latex: '\\geq', tooltip: 'greater than or equal (\\geq)', icon: '\\geq' },
+		text: { latex: '\\text', tooltip: 'text mode (")', icon: 'Tt' }
 	};
 
 	// Open the toolbar when the mathquill answer box gains focus.
