@@ -9,7 +9,7 @@ function createAnswerQuill() {
 	var answerLabel = this.id.replace(/^MaThQuIlL_/, "");
 	var input = $("#" + answerLabel);
 	var inputType = input.attr('type');
-	if (typeof(inputType) != 'string' || inputType.toLowerCase() !== "text") return true;
+	if (typeof(inputType) != 'string' || inputType.toLowerCase() !== "text") return;
 
 	var answerQuill = $("<span id='mq-answer-" + answerLabel + "'></span>");
 	answerQuill.input = input;
