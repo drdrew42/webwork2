@@ -192,7 +192,7 @@ var LeaderTable = function (_React$Component) {
 							"td",
 							{ className: "tdStyleLB" },
 							React.createElement(Filler, {
-								percentage: Math.floor(current.achievementPoints / maxScore * 1000) / 10
+								percentage: current.progress
 							})
 						)
 					));

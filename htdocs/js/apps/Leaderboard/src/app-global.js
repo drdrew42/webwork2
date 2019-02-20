@@ -139,9 +139,7 @@ class LeaderTable extends React.Component {
 						</td>
 						<td className="tdStyleLB">
 							<Filler
-								percentage={
-									Math.floor((current.achievementPoints / maxScore) * 1000) / 10
-								}
+								percentage={current.progress}
 							/>
 						</td>
 					</LeaderTableItem>
