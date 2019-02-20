@@ -95,26 +95,17 @@ class LeaderTable extends React.Component {
 	checkOption(option) {
 		let newDataGlobal = this.state.global;
 		if (option.target.id == "Earned") {
-			newDataGlobal.sort(function(a, b) {
-				return (
-					parseFloat(b.achievementsEarned) - parseFloat(a.achievementsEarned)
-				);
-			});
+			console.log(`sorting by achievements earned`);
+			newDataGlobal.sort( (a, b) => parseFloat(b.achievementsEarned) - parseFloat(a.achievementsEarned) );
 		} else if (option.target.id == "Points") {
-			newDataGlobal.sort(function(a, b) {
-				return (
-					parseFloat(b.achievementPoints) - parseFloat(a.achievementPoints)
-				);
-			});
+			console.log(`sorting by number of total points earned`);
+			newDataGlobal.sort( (a, b) => parseFloat(b.achievementPoints) - parseFloat(a.achievementPoints) );
 		} else if (option.target.id == "Progress") {
-			newDataGlobal.sort(function(a, b) {
-				return (
-					parseFloat(b.progress) - parseFloat(a.progress)
-				);
-			});
+			console.log(`sorting by percentage of progress to maxscore`);
+			newDataGlobal.sort( (a, b) => parseFloat(b.progress) - parseFloat(a.progress) );
 		}
-		let newDataLocal = newDataGlobal.filter( (item)=>item.ours );
-		let newData = (this.state.view == 'Local')?newDataLocal:newDataGlobal;
+		let newDataLocal = newDataGlobal.filter( item =>item.ours );
+		let newData = (this.state.view == 'Local') ? newDataLocal : newDataGlobal;
 		const placeLocal = newDataLocal.map(item => item.uid).indexOf(this.state.ourUID) +1;
 		const placeGlobal = newDataGlobal.map(item => item.uid).indexOf(this.state.ourUID) +1;
 		let newPlace = (this.state.view == 'Local')?placeLocal:placeGlobal;
@@ -174,9 +165,7 @@ class LeaderTable extends React.Component {
 						</td>
 						<td className="tdStyleLB">
 							<Filler
-								percentage={
-									Math.floor((current.achievementPoints / maxScore) * 1000) / 10
-								}
+								percentage={current.progress}
 							/>
 						</td>
 					</LeaderTableItem>;
@@ -208,13 +197,7 @@ class LeaderTable extends React.Component {
 						onClick={this.checkOption}
 					>
 						Achievements Earned
-						{this.state.current == "Earned" ? (
-							this.state.currentSort == "Asc" ? (
-								<i className="ion-android-arrow-dropup" />
-							) : (
-								<i className="ion-android-arrow-dropdown" />
-							)
-						) : null}
+						{this.state.current == "Earned" ? <i className="ion-android-arrow-dropdown" /> : null}
 					</th>
 					<th
 						className="sortButtons"
@@ -222,13 +205,7 @@ class LeaderTable extends React.Component {
 						onClick={this.checkOption}
 					>
 						Achievement Points
-						{this.state.current == "Points" ? (
-							this.state.currentSort == "Asc" ? (
-								<i className="ion-android-arrow-dropup" />
-							) : (
-								<i className="ion-android-arrow-dropdown" />
-							)
-						) : null}
+						{this.state.current == "Points" ? <i className="ion-android-arrow-dropdown" /> : null}
 					</th>
 					<th
 						className="sortButtons"
@@ -236,13 +213,7 @@ class LeaderTable extends React.Component {
 						onClick={this.checkOption}
 					>
 						Achievement Points Collected
-						{this.state.current == "Progress" ? (
-							this.state.currentSort == "Asc" ? (
-								<i className="ion-android-arrow-dropup" />
-							) : (
-								<i className="ion-android-arrow-dropdown" />
-							)
-						) : null}
+						{this.state.current == "Progress" ? <i className="ion-android-arrow-dropdown" /> : null}
 					</th>
 				</tr>
 				</thead>
