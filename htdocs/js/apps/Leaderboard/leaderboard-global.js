@@ -82,7 +82,7 @@ var LeaderTable = function (_React$Component) {
 				});
 				/* sort the global data then filter down to local */
 				globalData.sort(function (a, b) {
-					return b.progress - a.progress;
+					return parseFloat(b.progress) - parseFloat(a.progress);
 				});
 				var localData = globalData.filter(function (item) {
 					return item.ours;
@@ -374,7 +374,6 @@ var Leaderboard = function (_React$Component3) {
 	_createClass(Leaderboard, [{
 		key: "render",
 		value: function render() {
-
 			return React.createElement(
 				"div",
 				null,
