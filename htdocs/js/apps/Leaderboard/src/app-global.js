@@ -56,15 +56,15 @@ class LeaderTable extends React.Component {
 				/* first grab our unique ID - even if we have null achievement points */
 				const ourUID = (data.find(item => (item.id == user && item.ours == 1) )||{}).uid || -1;
 				/* filter out users with null achievement points */
-				var globalData = data.filter((item)=>item.achievementPoints);
+				var globalData = data.filter( item => item.achievementPoints );
 				/* add fields based on their section's number of assigned problems */
 				globalData.forEach(item => {
 					let maxScore = parseInt(item.numOfProblems)*parseInt(pointsPerProblem)+parseInt(item.achievementPtsSum);
 					item.progress = Math.floor((parseInt(item.achievementPoints) / maxScore) * 1000) / 10;
 				});
 				/* sort the global data then filter down to local */
-				globalData.sort((a, b) => b.progress - a.progress);
-				var localData = globalData.filter( (item) => item.ours );
+				globalData.sort( (a, b) => parseFloat(b.progress) - parseFloat(a.progress) );
+				var localData = globalData.filter( item => item.ours );
 				/* grab the position of our user, -1 if not a student */
 				const placeLocal = localData.map(item => item.uid).indexOf(ourUID) +1;
 				const placeGlobal = globalData.map(item => item.uid).indexOf(ourUID) +1;
@@ -134,9 +134,9 @@ class LeaderTable extends React.Component {
 		if (this.state.data.length > 0) {
 			for (var i = 0; i < this.state.data.length; i++) {
 				let current = this.state.data[i];
-	if (tableInfo.length >= 50) {break;}
-	let keyHash = current.id.substring(0,4)+current.uid.substring(5);
-	let itme = (current.uid === this.state.ourUID);
+				if (tableInfo.length >= 50) {break;}
+				let keyHash = current.id.substring(0,4)+current.uid.substring(5);
+				let itme = (current.uid === this.state.ourUID);
 				tableInfo.push(
 					<LeaderTableItem rID={itme} key={keyHash}>
 						<td className="tdStyleLB">
@@ -191,65 +191,63 @@ class LeaderTable extends React.Component {
 		return (
 			<div className="lbContainer">
 				<table className="lbTable">
-	<caption>Sponsored by Santander Bank</caption>
-					<thead>
-			<tr>
-				<th
-		colSpan={3}
-		id="leaderboardHeading"
-		onClick={this.swapLocal}
-				>{this.state.view=='Local'?">>>":"<<<"} {this.state.view} Leaderboard {this.state.view=='Local'?"<<<":">>>"}</th>
-			</tr>
-						<tr>
-							<th id="username">
-								Username
-							</th>
-							<th
-								className="sortButtons"
-								id="Earned"
-								onClick={this.checkOption}
-							>
-								Achievements Earned
-								{this.state.current == "Earned" ? (
-									this.state.currentSort == "Asc" ? (
-										<i className="ion-android-arrow-dropup" />
-									) : (
-										<i className="ion-android-arrow-dropdown" />
-									)
-								) : null}
-							</th>
-							<th
-								className="sortButtons"
-								id="Points"
-								onClick={this.checkOption}
-							>
-								Achievement Points
-								{this.state.current == "Points" ? (
-									this.state.currentSort == "Asc" ? (
-										<i className="ion-android-arrow-dropup" />
-									) : (
-										<i className="ion-android-arrow-dropdown" />
-									)
-								) : null}
-							</th>
-							<th
-		className="sortButtons"
-		id="Progress"
-								onClick={this.checkOption}
-							>
-								Achievement Points Collected
-								{this.state.current == "Progress" ? (
-									this.state.currentSort == "Asc" ? (
-										<i className="ion-android-arrow-dropup" />
-									) : (
-										<i className="ion-android-arrow-dropdown" />
-									)
-								) : null}
-							</th>
-						</tr>
-					</thead>
-					<tbody>{tableBody}</tbody>
-		<tfoot>{tableFoot}</tfoot>
+				<caption>Sponsored by Santander Bank</caption>
+				<thead>
+				<tr>
+					<th
+					colSpan={3}
+					id="leaderboardHeading"
+					onClick={this.swapLocal}
+					>{this.state.view=='Local'?">>>":"<<<"} {this.state.view} Leaderboard {this.state.view=='Local'?"<<<":">>>"}</th>
+				</tr>
+				<tr>
+					<th id="username">Username</th>
+					<th
+						className="sortButtons"
+						id="Earned"
+						onClick={this.checkOption}
+					>
+						Achievements Earned
+						{this.state.current == "Earned" ? (
+							this.state.currentSort == "Asc" ? (
+								<i className="ion-android-arrow-dropup" />
+							) : (
+								<i className="ion-android-arrow-dropdown" />
+							)
+						) : null}
+					</th>
+					<th
+						className="sortButtons"
+						id="Points"
+						onClick={this.checkOption}
+					>
+						Achievement Points
+						{this.state.current == "Points" ? (
+							this.state.currentSort == "Asc" ? (
+								<i className="ion-android-arrow-dropup" />
+							) : (
+								<i className="ion-android-arrow-dropdown" />
+							)
+						) : null}
+					</th>
+					<th
+						className="sortButtons"
+						id="Progress"
+						onClick={this.checkOption}
+					>
+						Achievement Points Collected
+						{this.state.current == "Progress" ? (
+							this.state.currentSort == "Asc" ? (
+								<i className="ion-android-arrow-dropup" />
+							) : (
+								<i className="ion-android-arrow-dropdown" />
+							)
+						) : null}
+					</th>
+				</tr>
+				</thead>
+				<tbody>{tableBody}</tbody>
+				<tfoot>{tableFoot}</tfoot>
 				</table>
 			</div>
 		);
@@ -262,9 +260,9 @@ class LeaderTableItem extends React.Component {
 		return <tr className="LeaderItemTr">{this.props.children}</tr>;
 	}
 }
+
 class Leaderboard extends React.Component {
 	render() {
-
 		return (
 			<div>
 				<LeaderTable />
@@ -274,39 +272,41 @@ class Leaderboard extends React.Component {
 }
 
 class Filler extends React.Component {
+
 	constructor() {
 		super();
 		this.state = { color: null };
 		this.changeColor = this.changeColor.bind(this);
 	}
+
 	changeColor() {
 		const perc = parseInt(this.props.percentage);
-	var r, g, b = 0;
-	if(perc < 50) {
-		r = 255;
-		g = Math.round(5.1 * perc);
+		var r, g, b = 0;
+		if(perc < 50) {
+			r = 255;
+			g = Math.round(5.1 * perc);
+		} else {
+			g = 255;
+			r = Math.round(510 - 5.10 * perc);
+		}
+		var h = r * 0x10000 + g * 0x100 + b * 0x1;
+		return '#' + ('000000' + h.toString(16)).slice(-6);
 	}
-	else {
-		g = 255;
-		r = Math.round(510 - 5.10 * perc);
-	}
-	var h = r * 0x10000 + g * 0x100 + b * 0x1;
-	return '#' + ('000000' + h.toString(16)).slice(-6);
-	}
+
 	render() {
 		return (
 			<div className="fillerContainer">
-	<span className="fillerBar"
+				<span className="fillerBar"
 				style={{
 					width: `${this.props.percentage}%`,
 					background: this.changeColor()
 				}}
 				></span>
 				<div className="fillerLabel"
-	style={{
-		left: `${this.props.percentage}%`
-	}}>
-					{this.props.percentage}%
+				style={{
+					left: `${this.props.percentage}%`
+				}}>
+				{this.props.percentage}%
 				</div>
 			</div>
 		);
