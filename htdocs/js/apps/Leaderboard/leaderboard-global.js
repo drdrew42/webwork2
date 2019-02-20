@@ -121,14 +121,17 @@ var LeaderTable = function (_React$Component) {
 		value: function checkOption(option) {
 			var newDataGlobal = this.state.global;
 			if (option.target.id == "Earned") {
+				console.log("sorting by achievements earned");
 				newDataGlobal.sort(function (a, b) {
 					return parseFloat(b.achievementsEarned) - parseFloat(a.achievementsEarned);
 				});
 			} else if (option.target.id == "Points") {
+				console.log("sorting by number of total points earned");
 				newDataGlobal.sort(function (a, b) {
 					return parseFloat(b.achievementPoints) - parseFloat(a.achievementPoints);
 				});
 			} else if (option.target.id == "Progress") {
+				console.log("sorting by percentage of progress to maxscore");
 				newDataGlobal.sort(function (a, b) {
 					return parseFloat(b.progress) - parseFloat(a.progress);
 				});
@@ -230,7 +233,7 @@ var LeaderTable = function (_React$Component) {
 					"td",
 					{ className: "tdStyleLB" },
 					React.createElement(Filler, {
-						percentage: Math.floor(current.achievementPoints / maxScore * 1000) / 10
+						percentage: current.progress
 					})
 				)
 			);
@@ -290,7 +293,7 @@ var LeaderTable = function (_React$Component) {
 									onClick: this.checkOption
 								},
 								"Achievements Earned",
-								this.state.current == "Earned" ? this.state.currentSort == "Asc" ? React.createElement("i", { className: "ion-android-arrow-dropup" }) : React.createElement("i", { className: "ion-android-arrow-dropdown" }) : null
+								this.state.current == "Earned" ? React.createElement("i", { className: "ion-android-arrow-dropdown" }) : null
 							),
 							React.createElement(
 								"th",
@@ -300,7 +303,7 @@ var LeaderTable = function (_React$Component) {
 									onClick: this.checkOption
 								},
 								"Achievement Points",
-								this.state.current == "Points" ? this.state.currentSort == "Asc" ? React.createElement("i", { className: "ion-android-arrow-dropup" }) : React.createElement("i", { className: "ion-android-arrow-dropdown" }) : null
+								this.state.current == "Points" ? React.createElement("i", { className: "ion-android-arrow-dropdown" }) : null
 							),
 							React.createElement(
 								"th",
@@ -310,7 +313,7 @@ var LeaderTable = function (_React$Component) {
 									onClick: this.checkOption
 								},
 								"Achievement Points Collected",
-								this.state.current == "Progress" ? this.state.currentSort == "Asc" ? React.createElement("i", { className: "ion-android-arrow-dropup" }) : React.createElement("i", { className: "ion-android-arrow-dropdown" }) : null
+								this.state.current == "Progress" ? React.createElement("i", { className: "ion-android-arrow-dropdown" }) : null
 							)
 						)
 					),
