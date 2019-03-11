@@ -138,9 +138,7 @@ class LeaderTable extends React.Component {
 							{current.achievementPoints ? current.achievementPoints : 0}
 						</td>
 						<td className="tdStyleLB">
-							<Filler
-								percentage={current.progress}
-							/>
+							<Filler percentage={current.progress} />
 						</td>
 					</LeaderTableItem>
 				);
@@ -162,9 +160,7 @@ class LeaderTable extends React.Component {
 							{current.achievementPoints ? current.achievementPoints : 0}
 						</td>
 						<td className="tdStyleLB">
-							<Filler
-								percentage={current.progress}
-							/>
+							<Filler	percentage={current.progress} />
 						</td>
 					</LeaderTableItem>;
 		return footer;
