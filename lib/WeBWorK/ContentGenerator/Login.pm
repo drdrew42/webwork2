@@ -151,6 +151,10 @@ sub pre_header_initialize {
 	}
 }
 
+sub head {
+        print '<meta name="robots" content="noindex" />';
+        return "";
+}
 
 sub body {
 	my ($self) = @_;
