@@ -51,7 +51,7 @@ const store = getModule(WeBWorKStore);
 })
 export default class SetDetails extends Vue {
   private selected_set_id: string = '';
-  private problem_set: ProblemSet = null;
+  private problem_set!: ProblemSet;
   private data_loading: boolean = true;
   private validReducedScoring: boolean = true;
   private validDueDate: boolean = true;

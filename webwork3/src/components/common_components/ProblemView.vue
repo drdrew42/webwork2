@@ -107,7 +107,10 @@ export default class ProblemView extends Vue {
 
   private fetchProblem(otherParams?: {[key: string]: any}) {
     this.html = '';
-    axios.get('/webwork3/api/renderer/courses/' + store.login_info.course_id + '/problems/0',
+    axios.get('/webwork3/api/renderer/courses/' + store.login_info.course_id +
+                '/users/' + store.login_info.logged_in_user.get('user_id') +
+                '/sets/' + this.problem.get('set_id') +
+                '/problems/' + this.problem.get('problem_id'),
                 {params: Object.assign({}, this.problem.getAttributes(), otherParams)})
         .then( (response) => {
           this.html = response.data.text;

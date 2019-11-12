@@ -17,3 +17,9 @@ body {  /* needed for the navigation bars top and bottom*/
 #footer {height: 30px;}
 #footer .navbar-text {margin: 0; font-size: 85%; line-height: 20px}
 #footer .container {min-height: 20px;}
+
+.scrollable {
+  position:relative;
+  height:600px;
+  overflow-y:scroll
+}

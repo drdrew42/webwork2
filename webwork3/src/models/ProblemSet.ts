@@ -96,7 +96,7 @@ export default class ProblemSet extends Model {
 
   public dataTypes(): {[key: string]: string | RegExp} {
     return {
-      set_id: /^[a-zA-Z_](\w)*/,
+      set_id: /^[a-zA-Z0-9_](\w)*/,
       open_date: 'nonnegint',
       reduced_scoring_date:  'nonnegint',
       due_date: 'nonnegint',

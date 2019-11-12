@@ -40,6 +40,7 @@ interface AssignmentInfo {
     Draggable,
   },
 })
+
 export default class CalendarRow extends Vue {
 
   @Prop({ type: Object, validator: moment.isMoment })
@@ -94,7 +95,7 @@ export default class CalendarRow extends Vue {
                             day1.get('year') === day2.get('year');
   }
 
-  private assignChange(newDate: moment.Moment, evt: MoveEvent) {
+  private assignChange(newDate: moment.Moment, evt: MoveEvent<any>) {
     if (evt.hasOwnProperty('added')) {
       const d = moment.default(newDate);
 

@@ -205,7 +205,9 @@ export default class WeBWorKStore extends VuexModule {
       this.context.commit('SET_PROBLEM_SETS', _sets);
     })
     .catch((error) => {
-        this.context.commit('SET_PROBLEM_SETS', []);
+      // tslint:disable-next-line
+      console.log("we triggered an error when mapping.");
+      this.context.commit('SET_PROBLEM_SETS', []);
       // tslint:disable-next-line
       console.log(error);
     });
