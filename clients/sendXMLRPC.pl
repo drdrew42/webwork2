@@ -306,7 +306,6 @@ use lib "$WeBWorK::Constants::WEBWORK_DIRECTORY/lib";
 
 
 use Carp;
-#use Crypt::SSLeay;  # needed for https
 use LWP::Protocol::https;
 use Time::HiRes qw/time/;
 use MIME::Base64 qw( encode_base64 decode_base64);
@@ -878,7 +877,7 @@ sub process_problem {
 
 	### build client
 	my $xmlrpc_client = new WebworkClient (
-		url                    => $credentials{site_url},
+		site_url               => $credentials{site_url},
 		form_action_url        => $credentials{form_action_url},
 		site_password          => $credentials{site_password}//'',
 		courseID               => $credentials{courseID},
@@ -896,7 +895,7 @@ sub process_problem {
 	die "problem seed not defined in sendXMLRPC::process_problem" unless $problemSeed;
 
 	
-    $local_psvn = $form_data->{psvn}//34567;
+    my $local_psvn = $form_data->{psvn}//34567;
 	my $updated_input = {%$input, 
 					  envir => $xmlrpc_client->environment(
 							   fileName       => $adj_file_path,
@@ -964,7 +963,7 @@ sub process_problem {
 	WebworkClient::writeRenderLogEntry("", 
 	"{script:$scriptName; file:$file_path; ". 
 	sprintf("duration: %.3f sec;", $cg_duration).
-	" url: $credentials{site_url}; }",'');
+	" site_url: $credentials{site_url}; }",'');
 	
 	#######################################################################
 	# End processing of the pg file
@@ -1440,12 +1439,12 @@ DETAILS
         or create a file with this information and specify it with the --credentials option.
     
             %credentials = (
-                            userID                 => "my login name for the webwork course",
-                            course_password        => "my password ",
-                            courseID               => "the name of the webwork course",
-                  XML_URL                  => "url of rendering site
-                  XML_PASSWORD          => "site password" # preliminary access to site
-                  $FORM_ACTION_URL      =  'http://localhost:80/webwork2/html2xml'; #action url for form
+                  userID                 => "my login name for the webwork course",
+                  course_password        => "my password ",
+                  courseID               => "the name of the webwork course",
+                  SITE_URL               => "url of rendering site",
+                  XML_PASSWORD           => "site password", # preliminary access to site
+                  form_action_url        => 'http://localhost:80/webwork2/html2xml' #action url for form
             );
 
   Options
