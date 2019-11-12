@@ -3947,7 +3947,7 @@ LatexCmds['\u221a'] = P(MathCommand, function(_, super_) {
     +   '<span class="mq-non-leaf mq-sqrt-stem">&0</span>'
     + '</span>'
   ;
-  _.textTemplate = ['sqrt(', ')'];
+  _.textTemplate = [' sqrt(', ')'];
   _.parser = function() {
     return latexMathParser.optBlock.then(function(optBlock) {
       return latexMathParser.block.map(function(block) {
