@@ -1,6 +1,6 @@
 ################################################################################
 # WeBWorK Online Homework Delivery System
-# Copyright © 2000-2007 The WeBWorK Project, http://openwebwork.sf.net/
+# Copyright &copy; 2000-2018 The WeBWorK Project, http://openwebwork.sf.net/
 # $CVSHeader: webwork2/lib/WeBWorK/PG.pm,v 1.76 2009/07/18 02:52:51 gage Exp $
 # 
 # This program is free software; you can redistribute it and/or modify it under
@@ -26,11 +26,10 @@ use base qw(WeBWorK);
 use strict;
 use warnings;
 use WeBWorK::CGI;
-use WeBWorK::Utils qw(before after readFile sortAchievements);
+use WeBWorK::Utils qw(before after readFile sortAchievements nfreeze_base64 thaw_base64);
 use WeBWorK::Utils::Tags;
 
 use WWSafe;
-use Storable qw(nfreeze thaw);
 
 sub checkForAchievements {
 
@@ -118,9 +117,10 @@ sub checkForAchievements {
     #Methods alowed in the safe container
     $compartment->permit(qw(time localtime));
 
-    #Thaw globalData hash
-    if ($globalUserAchievement->frozen_hash) {       
-		$globalData = thaw($globalUserAchievement->frozen_hash);
+    #Thaw_Base64 globalData hash
+    if ($globalUserAchievement->frozen_hash) {
+
+		$globalData = thaw_base64($globalUserAchievement->frozen_hash);
     }
 
     #Update a couple of "standard" variables in globalData hash.
@@ -217,9 +217,9 @@ sub checkForAchievements {
 	my $setType = $set->assignment_type;
 	next unless $achievement->assignment_type =~ /$setType/;
 
-	#thaw localData hash
+	#thaw_base64 localData hash
 	if ($userAchievement->frozen_hash) {
-	    $localData = thaw($userAchievement->frozen_hash);
+	    $localData = thaw_base64($userAchievement->frozen_hash);
 	}
 
 	#recover counter information (for progress bar achievements)
@@ -257,24 +257,37 @@ sub checkForAchievements {
 			$imgSrc .= $ce->{webworkURLs}->{htdocs}."/images/defaulticon.png";
 	    }
 
-	    $cheevoMessage .=  CGI::start_div({id=>"test", class=>'cheevopopupouter modal-body'});
+#	    $cheevoMessage .=  CGI::start_div({class=>'modal-header'});
+#	    $cheevoMessage .=  CGI::h5({class=>'modal-title',id=>'modalLabel'},"You Earned an Achievement!");
+#	    $cheevoMessage .=  '<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+#          <span aria-hidden="true">&times;</span>
+#        </button>';
+	    if (!$cheevoMessage){
+	            $cheevoMessage .=  CGI::start_div({class=>'modal-header'});
+        	    $cheevoMessage .=  CGI::a({href=>"#",class=>"close","data-dismiss"=>"modal", "aria-hidden"=>"true"},CGI::span({class=>"icon icon-remove"}),CGI::div({class=>"sr-only"},$r->maketext("Close")));
+	            $cheevoMessage .=  CGI::h3({id=>"modalLabel"},"You Earned an Achievement!");
+		    $cheevoMessage .=  CGI::end_div();
+		    $cheevoMessage .=  CGI::start_div({class=>'modal-body cheevopopupouter'});
+	    } # initialize cheevo-modal with a header - start body for multiple cheevos
+	    $cheevoMessage .=  CGI::start_div({class=>'cheevopopupinner'});
 	    $cheevoMessage .=  CGI::img({src=>$imgSrc, alt=>'Achievement Icon'});
-	    $cheevoMessage .= CGI::start_div({class=>'cheevopopuptext'});  
+	    $cheevoMessage .=  CGI::start_div({class=>'cheevopopuptext'});  
 	    if ($achievement->category eq 'level') {
 		
-			$cheevoMessage = $cheevoMessage . CGI::h2("$achievement->{name}");
+			$cheevoMessage = $cheevoMessage . CGI::h1("$achievement->{name}");
 			#print out description as part of message if we are using items
 			
 			$cheevoMessage .= CGI::div($ce->{achievementItemsEnabled} ?  $achievement->{description} : $r->maketext("Congratulations, you earned a new level!"));
-			$cheevoMessage .= CGI::end_div();
 
 	    } else {
 		
-			$cheevoMessage .=  CGI::h2("$achievement->{name}");
+			$cheevoMessage .=  CGI::h1("$achievement->{name}");
 			$cheevoMessage .=  CGI::div("<i>$achievement->{points} Points</i>: $achievement->{description}");
-			$cheevoMessage .= CGI::end_div();
 	    }
-	    
+
+	    $cheevoMessage .= CGI::end_div(); # end cheevopopuptext
+	    $cheevoMessage .= CGI::end_div(); # end cheevopopupinner
+
 	    # this feature doesn't really work anymore because
 	    # of a change in facebooks api
 	    #if facebook integration is enables then create a facebook popup
@@ -296,9 +309,7 @@ sub checkForAchievements {
 			$cheevoMessage .= CGI::end_script();
 
 	    }
-	        
-	    $cheevoMessage .= CGI::end_div();
-	    
+
 	        
 	    my $points = $achievement->points;
 	    #just in case points is an ininitialzied variable
@@ -310,19 +321,24 @@ sub checkForAchievements {
 	    $achievementPoints += $points;
 	}    
 	
-	#update counter, nfreeze localData and store
+	#update counter, nfreeze_base64 localData and store
 	$userAchievement->counter($counter);
-	$userAchievement->frozen_hash(nfreeze($localData));	
+	$userAchievement->frozen_hash(nfreeze_base64($localData));	
 	$db->putUserAchievement($userAchievement);
 	
     }  #end for loop
     
-    #nfreeze globalData and store
-    $globalUserAchievement->frozen_hash(nfreeze($globalData));
+    #nfreeze_base64 globalData and store
+    $globalUserAchievement->frozen_hash(nfreeze_base64($globalData));
     $db->putGlobalUserAchievement($globalUserAchievement);
 
+    # if a message has been created, end the body and add footer
     if ($cheevoMessage) {
-	$cheevoMessage = CGI::div({id=>"achievementModal", class=>"modal hide fade"},$cheevoMessage);
+	$cheevoMessage .= CGI::end_div(); # end modal-body cheevopopupouter
+	$cheevoMessage .= CGI::div({class=>"modal-footer"},'<button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Close</button>');
+#	$cheevoMessage = CGI::div({class=>"modal-content"},$cheevoMessage);
+#	$cheevoMessage = CGI::div({class=>"modal-dialog", role=>"document"},$cheevoMessage);
+	$cheevoMessage = CGI::div({id=>"achievementModal", class=>"modal hide fade in", tabindex=>"-1", role=>"dialog", 'aria-labeledby'=>"modalLabel", 'aria-hidden'=>"true"},$cheevoMessage);
     }
 
     return $cheevoMessage;
@@ -330,3 +346,5 @@ sub checkForAchievements {
 
 #Perl magic
 1;
+
+
