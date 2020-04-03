@@ -112,19 +112,19 @@ input[type=text]
     margin-left: 2px;
 }
 
-.ui-tooltip.ui-widget.ui-widget-content
+.uitooltip
 {
-    padding: 5px;
     background: black;
-    border: 1px solid black;
+    color: white;
+    border: 0px;
     border-radius: 4px;
     display: inline-block;
+    text-align: center;
+    font-size: 0.7em;
 }
 
 .ui-tooltip-content
 {
-    text-align: center;
-    font-size: 0.7em;
-    background: black;
-    color: white;
+    padding: 5px;
 }
+

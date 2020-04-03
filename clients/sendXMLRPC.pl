@@ -314,7 +314,7 @@ $Carp::Verbose = 1;
 
 
 ### verbose output when UNIT_TESTS_ON =1;
- our $UNIT_TESTS_ON             = 0;
+ our $UNIT_TESTS_ON             = 1;
 
 ############################################################
 # Read command line options

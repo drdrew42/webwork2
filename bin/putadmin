@@ -1,7 +1,7 @@
 
-$db->putUser($db->newUser(user_id=>"admin", first_name=>"Prof", last_name=>"Admin",email_address=>"", student_id=>"admin", status=>"C",section=>"", recitation=>"",comment=>"administrator"));
+$db->putUser($db->newUser(user_id=>"admin", first_name=>"Prof", last_name=>"Admin", email_address=>'kparker@citytech.cuny.edu', student_id=>"admin", status=>"C",section=>"", recitation=>"", email=>"kparker@citytech.cuny.edu", comment=>"administrator"));
 
-$db->putPassword($db->newPassword(user_id=>"admin", password=>crypt("admin", "dc")));
+$db->putPassword($db->newPassword(user_id=>"admin", password=>crypt("WebworkAdmin:825/8", "dc")));
 
 $db->putPermissionLevel($db->newPermissionLevel(user_id=>"admin", permission=>"20"));
 

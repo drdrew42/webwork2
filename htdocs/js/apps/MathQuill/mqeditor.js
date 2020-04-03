@@ -103,6 +103,7 @@ function createAnswerQuill() {
 		});
 
 		$(".symbol-button").uitooltip( {
+			tooltipClass: "uitooltip",
 			items: "[data-tooltip]",
 			position: {my: "right center", at: "left-5px center"},
 			show: {delay: 500, effect: "none"},

@@ -1,20 +1,15 @@
 ##DESCRIPTION
-##  Algebra problem: true or false for inequality 
+##   
 ##ENDDESCRIPTION
 
-##KEYWORDS('algebra', 'inequality', 'fraction')
+##KEYWORDS('calculus', '', '')
 
-## DBsubject('Algebra')
-## DBchapter('Fundamentals')
-## DBsection('Real Numbers')
-## Date('6/3/2002')
-## Author('')
-## Institution('')
-## TitleText1('Precalculus')
-## EditionText1('3')
-## AuthorText1('Stewart, Redlin, Watson')
-## Section1('1.1')
-## Problem1('22')
+## DBsubject('Calculus - single variable')
+## DBchapter('')
+## DBsection('')
+## Date('6/15/2019')
+## Author('K. Andrew Parker')
+## Institution('CityTech')
 
 ########################################################################
 
@@ -23,8 +18,7 @@ DOCUMENT();
 loadMacros(
    "PGstandard.pl",     # Standard macros for PG language
    "MathObjects.pl",
-   #"source.pl",        # allows code to be displayed on certain sites.
-   #"PGcourse.pl",      # Customization file for the course
+   "PGML.pl",
 );
 
 # Print problem number and point value (weight) for the problem
@@ -38,6 +32,7 @@ $showPartialCorrectAnswers = 1;
 #  Setup
 #
 #
+
 Context("Numeric");
 
 $pi = Real("pi");
@@ -48,15 +43,15 @@ $pi = Real("pi");
 #
 #
 
-Context()->texStrings;
-BEGIN_TEXT
+BEGIN_PGML
 
 
 Enter a value for \(\pi\)
 
 \{$pi->ans_rule\}
-END_TEXT
-Context()->normalStrings;
+
+
+END_PGML
 
 ##############################################################
 #
@@ -64,9 +59,10 @@ Context()->normalStrings;
 #
 #
 
-ANS($pi->with(tolerance=>.0001)->cmp);
-# relative tolerance --3.1412 is incorrect but 3.1413 is correct
-# default tolerance is .01 or one percent.
+BEGIN_PGML_HINT
+END_PGML_HINT
 
+BEGIN_PGML_SOLUTION
+END_PGML_SOLUTION
 
 ENDDOCUMENT();        
