@@ -5,14 +5,17 @@ use warnings;
 use version;
 
 my @applicationsList = qw(
-        curl
+	convert
+	curl
+	dvisvgm
 	mkdir
 	mv
 	mysql
 	tar
-        git
+	git
 	gzip
 	latex
+	pdf2svg
 	pdflatex
 	dvipng
 	giftopnm
@@ -32,7 +35,6 @@ my @apache1ModulesList = qw(
 
 my @apache2ModulesList = qw(
 	Apache2::Request
-	Apache2::Cookie
 	Apache2::ServerRec
 	Apache2::ServerUtil
 );
@@ -40,13 +42,13 @@ my @apache2ModulesList = qw(
 
 
 my @modulesList = qw(
+	Archive::Zip
 	Array::Utils
 	Benchmark
 	Carp
 	CGI
+	CGI::Cookie
 	Class::Accessor
-	Dancer
-	Dancer::Plugin::Database
 	Data::Dump
 	Data::Dumper
 	Data::UUID
@@ -58,9 +60,9 @@ my @modulesList = qw(
 	Digest::MD5
 	Digest::SHA
 	Email::Address::XS
-	Email::Simple
 	Email::Sender::Simple
 	Email::Sender::Transport::SMTP
+	Email::Simple
 	Errno
 	Exception::Class
 	File::Copy
@@ -77,17 +79,17 @@ my @modulesList = qw(
 	HTML::Scrubber
 	HTML::Tagset
 	HTML::Template
+	HTTP::Async
 	IO::File
 	IO::Socket::SSL
 	Iterator
 	Iterator::Util
 	JSON
+	JSON::MaybeXS
 	Locale::Maketext::Lexicon
 	Locale::Maketext::Simple
 	LWP::Protocol::https
 	MIME::Base64
-	Moo
-	MooX::Options
 	Net::IP
 	Net::LDAPS
 	Net::OAuth

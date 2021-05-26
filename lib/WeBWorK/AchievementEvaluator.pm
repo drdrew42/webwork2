@@ -44,7 +44,11 @@ sub checkForAchievements {
     my $cheevoMessage = '';
     my $user_id = $problem->user_id;
     my $set_id = $problem->set_id;
-    our $set = $db->getGlobalSet($problem->set_id);
+    # exit early if the set is to be ignored by achievements
+    foreach my $excludedSet (@{ $ce->{achievementExcludeSet} }) {
+	return '' if $set_id eq $excludedSet;
+    }
+    our $set = $db->getMergedSet($user_id,$problem->set_id);
     my @allAchievementIDs = $db->listAchievements; 
     my @achievements = $db->getAchievements(@allAchievementIDs);
     @achievements = sortAchievements(@achievements);
@@ -88,9 +92,10 @@ sub checkForAchievements {
     # updated $problem with the new results from $pg.  So we cheat and update the 
     # important bits here.  The only thing that gets left behind is last_answer, which is
     # still the previous last answer. 
-    # 
     
-    $problem->status($pg->{state}->{recorded_score});
+    # $pg->{result} reflects the current submission, $pg->{state} holds the best result 
+    # close the unlimited achievement points loophole by only using the current result!
+    $problem->status($pg->{result}->{score});
     $problem->sub_status($pg->{state}->{sub_recorded_score});
     $problem->attempted(1);
     $problem->num_correct($pg->{state}->{num_of_correct_ans});

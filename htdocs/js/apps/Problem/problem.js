@@ -1,3 +1,9 @@
+// Cause achievement popups to appear and then go away 
+$(window).on("load", function() {
+	$('#achievementModal').modal('show');
+	setTimeout(function() { $('#achievementModal').modal('hide'); }, 5000);
+});
+
 $(function() {    
     // Cause achievement popups to appear and then go away
     $(window).load(function() { $('#achievementModal').modal('show');
@@ -11,8 +17,3 @@ $(function() {
 	});
     
 })
-
-function submitAction() {
-    
-}
-
