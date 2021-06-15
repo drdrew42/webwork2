@@ -72,7 +72,7 @@ sub sql_init {
 	my $self = shift;
 	
 	# transformation functions for table and field names: these allow us to pass
-	# the WeBWorK table/field names to SQL::Abstract, and have it translate them
+	# the WeBWorK table/field names to SQL::Abstract::Classic, and have it translate them
 	# to the SQL table/field names from tableOverride and fieldOverride.
 	# (Without this, it would be hard to translate field names in WHERE
 	# structures, since they're so convoluted.)
@@ -305,14 +305,18 @@ sub _get_db_info {
 	}
 
 	# doing this securely is kind of a hassle...
+
 	my $my_cnf = new File::Temp;
 	$my_cnf->unlink_on_destroy(1);
 	chmod 0600, $my_cnf or die "failed to chmod 0600 $my_cnf: $!"; # File::Temp objects stringify with ->filename
 	print $my_cnf "[client]\n";
-	print $my_cnf "user=$username\n" if defined $username and length($username) > 0;
-	print $my_cnf "password=$password\n" if defined $password and length($password) > 0;
-	print $my_cnf "host=$dsn{host}\n" if defined $dsn{host} and length($dsn{host}) > 0;
-	print $my_cnf "port=$dsn{port}\n" if defined $dsn{port} and length($dsn{port}) > 0;
+
+	# note: the quotes below are needed for special characters (and others) so they are passed to the database correctly. 
+
+	print $my_cnf "user=\"$username\"\n" if defined $username and length($username) > 0;
+	print $my_cnf "password=\"$password\"\n" if defined $password and length($password) > 0;
+	print $my_cnf "host=\"$dsn{host}\"\n" if defined $dsn{host} and length($dsn{host}) > 0;
+	print $my_cnf "port=\"$dsn{port}\"\n" if defined $dsn{port} and length($dsn{port}) > 0;
 	print $my_cnf "$column_statistics_off" if $test_for_column_statistics;
 
 	return ($my_cnf, $dsn{database});
