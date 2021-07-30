@@ -563,13 +563,27 @@ sub institution_logo {
 	my $ce = $r->ce;
 	my $theme = $r->param("theme") || $ce->{defaultTheme};
 	my $htdocs = $ce->{webwork_htdocs_url};
-	print CGI::a(
-		{href => $ce->{institutionURL}},
-		CGI::img({
-			src => "$htdocs/themes/$theme/images/" . $ce->{institutionLogo},
-			alt => $r->maketext("to [_1] main web site", $ce->{institutionName})
-		},'')
+	print qq!<link rel='stylesheet' href='$htdocs/themes/$theme/logo.css'>!;
+	print CGI::div({class=>'logo-container'},
+		CGI::img({src=>"$htdocs/themes/$theme/images/" . $ce->{institutionLogo},
+			alt => $r->maketext("to [_1] main website", $ce->{institutionName})}), 
+		CGI::div({class=>'txt-container'},
+			CGI::div({class=>'logo-top'},'Powered by'),
+			CGI::div({class=>'txt anim-text-flow'},'Rationarium'))
 	);
+	print q!<script>
+$('.txt').html(function(i, html) {
+  var chars = $.trim(html).split("");
+  return '<span>' + chars.join('</span><span>') + '</span>';
+});
+</script>!;
+#	print CGI::a(
+#		{href => $ce->{institutionURL}},
+#		CGI::img({
+#			src => "$htdocs/themes/$theme/images/" . $ce->{institutionLogo},
+#			alt => $r->maketext("to [_1] main web site", $ce->{institutionName})
+#		},'')
+#	);
 	return "";
 }
 

@@ -42,6 +42,7 @@ use Carp;
 #use Mail::Sender;
 use Storable qw(nfreeze thaw);
 use JSON;
+use WebService::Mailgun;
 
 use open IO => ':encoding(UTF-8)';
 
@@ -84,6 +85,7 @@ our @EXPORT_OK = qw(
 	listFilesRecursive
 	makeTempDirectory
 	max
+	newEmailAPI
         nfreeze_base64
 	not_blank
 	parseDateTime
@@ -151,6 +153,15 @@ sub runtime_use($;@) {
 	eval "package $package; require $module; $import_string";
 	die $@ if $@;
 }
+
+sub newEmailAPI($$) {
+	my ($api_key, $domain) = @_;
+	return WebService::Mailgun->new(
+		api_key => $api_key,
+		domain  => $domain,
+		RaiseError => 1
+	);
+};
 
 #sub backtrace($) {
 #	my ($style) = @_;

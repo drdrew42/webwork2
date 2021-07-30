@@ -40,7 +40,7 @@ use WeBWorK::Debug;
 use Socket qw/unpack_sockaddr_in inet_ntoa/; # for remote host/port info
 use Text::Wrap qw(wrap);
 use WeBWorK::HTML::ScrollingRecordList qw/scrollingRecordList/;
-use WeBWorK::Utils qw/readFile readDirectory/;
+use WeBWorK::Utils qw/readFile readDirectory newEmailAPI/;
 use WeBWorK::Utils::FilterRecords qw/filterRecords/;
 
 
@@ -864,6 +864,7 @@ sub mail_message_to_recipients {
 	my $result_message        = '';
 	my $failed_messages        = 0;
 	my $error_messages         = '';
+	my $emailSender           = newEmailAPI($ce->{mail}{api_key}, $ce->{mail}{domain});
 	foreach my $recipient (@recipients) {
 			$error_messages = '';
 
@@ -889,21 +890,29 @@ sub mail_message_to_recipients {
 # 
 
 #           createEmailSenderTransportSMTP is defined in ContentGenerator
-			my $transport = $self->createEmailSenderTransportSMTP();
-			my $email = Email::Simple->create(
-				header => [
-					To => $ur->email_address,
-					From => $from,
-					Subject => $subject,
-					"Content-Type" => "text/plain; charset=UTF-8" ],
-				body => Encode::encode("UTF-8",$msg)
-			);
-			$email->header_set("X-Remote-Host: ",$self->{remote_host});
-
+			#my $transport = $self->createEmailSenderTransportSMTP();
+			#my $email = Email::Simple->create(
+			#	header => [
+			#		To => $ur->email_address,
+			#		From => $from,
+			#		Subject => $subject,
+			#		"Content-Type" => "text/plain; charset=UTF-8" ],
+			#	body => Encode::encode("UTF-8",$msg)
+			#);
+			
+			#$email->header_set("X-Remote-Host: ",$self->{remote_host});
+			my $email = {
+				to => $ur->email_address,
+				from => $from,
+				subject => $subject,
+				text => Encode::encode('UTF-8',$msg),
+				'h:X-Remote-Host' => $self->{remote_host}
+			};
 
 			try {
-				sendmail($email,{transport => $transport});
-				debug "email sent successfully to " . $ur->email_address;
+				my $res = $emailSender->message($email);
+				#sendmail($email,{transport => $transport});
+				debug "[$res] email sent successfully to " . $ur->email_address;
 			} catch {
 				  debug "error sending email: $_";
 				  debug dump $@;
@@ -944,21 +953,29 @@ sub email_notification {
 # 
 # 	$transport->port($ce->{mail}->{smtpPort}) if defined $ce->{mail}->{smtpPort}; 
 #           createEmailSenderTransportSMTP is defined in ContentGenerator
-	my $transport = $self->createEmailSenderTransportSMTP();
+	#my $transport = $self->createEmailSenderTransportSMTP();
 
-	my $email = Email::Simple->create(
-		header => [
-			To => $self->{defaultFrom},
-			From => $self->{defaultFrom},
-			Subject => $subject,
-			"Content-Type" => "text/plain; charset=UTF-8"
-		],
-		body => Encode::encode("UTF-8",$result_message),
-	);
-	$email->header_set("X-Remote-Host: ",$self->{remote_host});
-
+	#my $email = Email::Simple->create(
+	#	header => [
+	#		To => $self->{defaultFrom},
+	#		From => $self->{defaultFrom},
+	#		Subject => $subject,
+	#		"Content-Type" => "text/plain; charset=UTF-8"
+	#	],
+	#	body => Encode::encode("UTF-8",$result_message),
+	#);
+	#$email->header_set("X-Remote-Host: ",$self->{remote_host});
+	my $email = {
+		to => $self->{defaultFrom},
+		from => $self->{defaultFrom}, #'rationarium.org <system@webwork.rationarium.org>',
+		subject => $subject,
+		text => Encode::encode('UTF-8', $result_message),
+		'h:X-Remote-Host' => $self->{remote_host}
+	};
+	my $sender = newEmailAPI($ce->{mail}{api_key}, $ce->{mail}{domain});
 	try {
-		sendmail($email,{transport => $transport});
+		my $res = $sender->message($email);
+		#sendmail($email,{transport => $transport});
 	} catch {
 			warn "Error sending email: $_";
 			next;
