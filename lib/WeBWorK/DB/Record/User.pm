@@ -29,7 +29,7 @@ use Encode qw(encode);
 
 BEGIN {
 	__PACKAGE__->_fields(
-		user_id       => { type=>"TINYBLOB NOT NULL", key=>1 },
+		user_id       => { type=>"VARCHAR(255) NOT NULL", key=>1 },
 		first_name    => { type=>"TEXT" },
 		last_name     => { type=>"TEXT" },
 		email_address => { type=>"TEXT" },

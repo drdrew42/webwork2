@@ -162,7 +162,7 @@ sub _create_table_stmt {
 		}
 		
 		my $index_string = join(", ", @index_components);
-		my $index_type = $start == 0 ? "UNIQUE KEY" : "KEY";
+		my $index_type = $start == 0 ? "PRIMARY KEY" : "KEY";
 		push @field_list, "$index_type ( $index_string )";
 	}
 	
@@ -838,7 +838,7 @@ sub engine {
   my ($self) = @_;
   return defined $self->{engine}
     ? $self->{engine}
-    : 'MYISAM';
+    : 'innodb';
 }
 
 sub character_set {

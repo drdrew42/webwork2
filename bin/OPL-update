@@ -222,7 +222,7 @@ if($libraryVersion eq '2.5') {
 [$tables{pgfile_keyword}, '
 	pgfile_id int(15) DEFAULT 0 NOT NULL,
 	keyword_id int(15) DEFAULT 0 NOT NULL,
-	KEY pgfile_keyword (keyword_id, pgfile_id),
+	PRIMARY KEY pgfile_keyword (keyword_id, pgfile_id),
 	KEY pgfile (pgfile_id)
 '],
 [$tables{textbook}, '
