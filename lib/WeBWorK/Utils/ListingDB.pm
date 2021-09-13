@@ -1,6 +1,6 @@
 ################################################################################
 # WeBWorK Online Homework Delivery System
-# Copyright � 2000-2007 The WeBWorK Project, http://openwebwork.sf.net/
+# Copyright &copy; 2000-2007 The WeBWorK Project, http://openwebwork.sf.net/
 # $CVSHeader: webwork2/lib/WeBWorK/Utils/ListingDB.pm,v 1.19 2007/08/13 22:59:59 sh002i Exp $
 # 
 # This program is free software; you can redistribute it and/or modify it under
@@ -114,6 +114,8 @@ sub getDB {
 	die "Cannot connect to problem library database" unless $dbh;
 	return($dbh);
 }
+
+=over
 
 =item getProblemTags($path) and setProblemTags($path, $subj, $chap, $sect)
 Get and set tags using full path and Tagging module
@@ -418,17 +420,13 @@ sub getAllDBsections {
 	return @results;
 }
 
-=item getDBSectionListings($r)                             
+=item getDBListings($r)                             
 Returns an array of hash references with the keys: path, filename.              
                                                                                 
 $r is an Apache request object that has all needed data inside of it
 
 Here, we search on all known fields out of r
                                                                                 
-=cut
-
-=item 
-
 =cut
 
 sub getDBListings {
@@ -439,6 +437,12 @@ sub getDBListings {
 	my $subj = $r->param('library_subjects') || "";
 	my $chap = $r->param('library_chapters') || "";
 	my $sec = $r->param('library_sections') || "";
+	
+	# Make sure these strings are internally encoded in UTF-8
+	utf8::upgrade($subj);
+	utf8::upgrade($chap);
+	utf8::upgrade($sec);
+
 	my $keywords = $r->param('library_keywords') || "";
 	# Next could be an array, an array reference, or nothing
 	my @levels = $r->param('level');
@@ -510,6 +514,8 @@ sub getDBListings {
 #               $kw2";
 
 	my $pg_id_ref;
+	
+	$dbh->do(qq{SET NAMES 'utf8mb4';}) if $ce->{ENABLE_UTF8MB4};
 	if($haveTextInfo) {
 		my $query = "SELECT $selectwhat from `$tables{pgfile}` pgf, 
 			`$tables{dbsection}` dbsc, `$tables{dbchapter}` dbc, `$tables{dbsubject}` dbsj,
@@ -880,6 +886,8 @@ sub indirectSortByName {
 1;
 
 __END__
+
+=back
 
 =head1 DESCRIPTION
 
